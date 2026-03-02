@@ -3,6 +3,7 @@ const authRouter = express.Router();
 
 //import controller
 const authController = require("../controllers/auth.controller");
+const authUser = require("../middlewares/auth.middleware");
 
 /**
  * Register a new user
@@ -20,4 +21,21 @@ authRouter.post("/register",authController.registerUserController);
  */
 authRouter.post("/login", authController.loginUserController);
 
+/**
+ * Logout a user by blacklisting their token
+ * @route POST /api/auth/logout
+ * @description Logout a user by blacklisting their token
+ * @access Public
+ */
+authRouter.post("/logout", authController.logoutUserController);
+
+/**
+ * get me endpoint to get current user details
+ * @route GET /api/auth/get-me
+ * @description Get current user details using the token from cookies
+ * @access Private
+ *  */  
+authRouter.get("/get-me",authUser,authController.getMeController);
+
 module.exports = authRouter;
+  

@@ -1,6 +1,7 @@
 const userModel = require("../models/user.model");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const Blacklist = require("../models/blacklist.model");
 
 /**
  * @name registerUserController
@@ -142,4 +143,75 @@ async function loginUserController(req, res) {
   }
 }
 
-module.exports = { registerUserController, loginUserController };
+/**
+ * @name logoutUserController
+ * @description Logout a user by blacklisting their token
+ * @route POST /api/auth/logout
+ * @access Public
+ */
+async function logoutUserController(req, res) {
+  try {
+    const token = req.cookies.token;
+
+    if (!token) {
+      return res.status(400).json({
+        success: false,
+        message: "No token provided",
+      });
+    }
+
+    // blacklist token
+    await Blacklist.create({ token });
+
+    // clear cookie
+    res.clearCookie("token", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: "Logout successful",
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      success: false,
+      message: "Server Error",
+    });
+  }
+}
+
+/**
+ * @name getMeController
+ * @description Get current user details using the token from cookies
+ * @route GET /api/auth/get-me
+ * @access Private
+ */
+async function getMeController(req, res) {
+  const user = await userModel.findById(req.user.id);
+
+  if (!user) {
+    return res.status(404).json({
+      success: false,
+      message: "User not found",
+    });
+  }
+  return res.status(200).json({
+    success: true,
+    message: "User details fetched successfully",
+    user: {
+      id: user._id,
+      username: user.username,
+      email: user.email,
+    },
+  });
+}
+
+module.exports = {
+  registerUserController,
+  loginUserController,
+  logoutUserController,
+  getMeController,
+};
