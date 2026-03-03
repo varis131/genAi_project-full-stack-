@@ -1,12 +1,11 @@
-
+import { RouterProvider } from "react-router";
+import {router} from "./app.routes.jsx"
 
 function App() {
-
   return (
-   <div className="bg-black ">
-      hellow jiii
-   </div>
-  )
+    <RouterProvider router={router}/>
+  );
 }
+  
 
-export default App
+export default App;
