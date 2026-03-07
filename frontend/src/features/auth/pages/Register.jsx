@@ -28,20 +28,9 @@ const Register = () => {
 
   return (
     <div
-      className="relative min-h-screen flex items-center justify-center 
-                    bg-[#0a0f1c] overflow-hidden px-4"
+      className="hero-bg relative min-h-screen flex items-center justify-center 
+                    overflow-hidden px-4 text-white"
     >
-      {/* Background Glow */}
-      <div
-        className="absolute w-[500px] h-[500px] bg-indigo-600/20 
-                      blur-[120px] rounded-full -top-40 -left-40"
-      ></div>
-
-      <div
-        className="absolute w-[400px] h-[400px] bg-cyan-500/20 
-                      blur-[120px] rounded-full bottom-0 right-0"
-      ></div>
-
       {/* Card */}
       <div
         className="relative w-full max-w-md 
@@ -50,7 +39,7 @@ const Register = () => {
                       rounded-2xl p-10 shadow-2xl"
       >
         {/* Heading */}
-        <h1 className="text-3xl font-semibold text-white text-center mb-8">
+        <h1 className="text-3xl font-semibold text-center mb-8">
           Create your account
         </h1>
 
@@ -69,7 +58,7 @@ const Register = () => {
                          bg-white/5 border border-white/10 
                          text-white placeholder-gray-500
                          focus:outline-none focus:ring-2 
-                         focus:ring-cyan-400 focus:border-cyan-400
+                         focus:ring-rose-400 focus:border-rose-400
                          transition"
             />
           </div>
@@ -90,7 +79,7 @@ const Register = () => {
                          bg-white/5 border border-white/10 
                          text-white placeholder-gray-500
                          focus:outline-none focus:ring-2 
-                         focus:ring-cyan-400 focus:border-cyan-400
+                         focus:ring-rose-400 focus:border-rose-400
                          transition"
             />
           </div>
@@ -109,7 +98,7 @@ const Register = () => {
                          bg-white/5 border border-white/10 
                          text-white placeholder-gray-500
                          focus:outline-none focus:ring-2 
-                         focus:ring-cyan-400 focus:border-cyan-400
+                         focus:ring-rose-400 focus:border-rose-400
                          transition"
             />
           </div>
@@ -119,8 +108,8 @@ const Register = () => {
             type="submit"
             disabled={loading}
             className="w-full py-3 rounded-lg font-semibold text-white
-             bg-gradient-to-r from-indigo-500 to-cyan-500
-             hover:from-indigo-600 hover:to-cyan-600
+             bg-gradient-to-r from-rose-500 to-orange-500
+             hover:from-rose-400 hover:to-orange-400
              transition duration-200 shadow-lg
              flex items-center justify-center gap-2
              disabled:opacity-60 disabled:cursor-not-allowed"
@@ -141,7 +130,7 @@ const Register = () => {
           Already have an account?{" "}
           <Link
             to="/login"
-            className="text-cyan-400 hover:text-cyan-300 font-medium"
+            className="text-rose-300 hover:text-rose-200 font-medium"
           >
             Sign in
           </Link>

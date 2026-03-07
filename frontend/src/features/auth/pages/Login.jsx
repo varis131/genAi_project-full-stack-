@@ -29,20 +29,9 @@ const Login = () => {
 
   return (
     <div
-      className="relative min-h-screen flex items-center justify-center 
-                    bg-[#0a0f1c] overflow-hidden px-4"
+      className="hero-bg relative min-h-screen flex items-center justify-center 
+                    overflow-hidden px-4 text-white"
     >
-      {/* Subtle AI Glow Background */}
-      <div
-        className="absolute w-[500px] h-[500px] bg-indigo-600/20 
-                      blur-[120px] rounded-full -top-40 -left-40"
-      ></div>
-
-      <div
-        className="absolute w-[400px] h-[400px] bg-cyan-500/20 
-                      blur-[120px] rounded-full bottom-0 right-0"
-      ></div>
-
       {/* Card */}
       <div
         className="relative w-full max-w-md 
@@ -51,7 +40,7 @@ const Login = () => {
                       rounded-2xl p-10 shadow-2xl"
       >
         {/* Heading */}
-        <h1 className="text-3xl font-semibold text-white text-center mb-8">
+        <h1 className="text-3xl font-semibold text-center mb-8">
           Sign in to your account
         </h1>
 
@@ -72,7 +61,7 @@ const Login = () => {
                          bg-white/5 border border-white/10 
                          text-white placeholder-gray-500
                          focus:outline-none focus:ring-2 
-                         focus:ring-cyan-400 focus:border-cyan-400
+                         focus:ring-rose-400 focus:border-rose-400
                          transition"
             />
           </div>
@@ -81,7 +70,7 @@ const Login = () => {
           <div>
             <div className="flex justify-between mb-2">
               <label className="text-sm text-gray-300">Password</label>
-              <span className="text-sm text-cyan-400 hover:text-cyan-300 cursor-pointer">
+              <span className="text-sm text-rose-300 hover:text-rose-200 cursor-pointer">
                 Forgot password?
               </span>
             </div>
@@ -98,14 +87,14 @@ const Login = () => {
                  bg-white/5 border border-white/10 
                  text-white placeholder-gray-500
                  focus:outline-none focus:ring-2 
-                 focus:ring-cyan-400 focus:border-cyan-400
+                 focus:ring-rose-400 focus:border-rose-400
                  transition"
               />
 
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className=" absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-cyan-400 transition"
+                className=" absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-rose-300 transition"
               >
                 {showPassword ? (
                   <EyeOff className="w-4 h-4" />
@@ -121,7 +110,8 @@ const Login = () => {
             type="submit"
             disabled={loading}
             className="w-full py-3 rounded-lg font-semibold text-white
-               bg-gradient-to-r from-indigo-500 to-cyan-500
+               bg-gradient-to-r from-rose-500 to-orange-500
+               hover:from-rose-400 hover:to-orange-400
                flex items-center justify-center gap-2"
           >
             {loading ? (
@@ -140,7 +130,7 @@ const Login = () => {
           Don’t have an account?{" "}
           <Link
             to="/register"
-            className="text-cyan-400 hover:text-cyan-300 font-medium"
+            className="text-rose-300 hover:text-rose-200 font-medium"
           >
             Register
           </Link>
