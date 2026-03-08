@@ -95,7 +95,7 @@ const Hero = () => {
               type="button"
               className="rounded-full bg-gradient-to-r from-rose-500 to-orange-500 
               px-8 py-3 text-sm font-semibold text-black shadow-[0_0_40px_rgba(248,113,113,0.9)]
-               transition hover:from-rose-400 hover:to-orange-400"
+               transition hover:from-rose-400 hover:to-orange-400 cursor-pointer"
               onClick={() => navigate("/home")}
             >
               Start Preparing
@@ -107,7 +107,7 @@ const Hero = () => {
           <div
             className={`flex items-center justify-between text-[11px] ${testimonialsHeaderText}`}
           >
-            <span className="flex items-center gap-2">
+            <span className="flex items-center gap-2 cursor-pointer">
               <span className="text-rose-400">›</span>
               What people say
             </span>
