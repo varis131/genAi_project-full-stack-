@@ -3,7 +3,7 @@ import {
   getInterviewReportById,
   getAllInterviewReports,
   generateResumePdf,
-} from "../services/interview.service";
+} from "../services/interview.api";
 
 import { useContext } from "react";
 import { InterviewContext } from "../interview.context";
