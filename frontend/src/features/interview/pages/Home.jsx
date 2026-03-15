@@ -27,7 +27,7 @@ const Home = () => {
   };
 
   return (
-    <section className="relative min-h-screen bg-[#0b0f19] px-4 py-16 text-white flex flex-col items-center">
+    <section className="relative min-h-screen bg-[#0b0f19] px-4  py-25 text-white flex flex-col items-center">
       {/* HEADING */}
       <div className="text-center mb-12 max-w-2xl">
         <h1 className="text-4xl font-bold">

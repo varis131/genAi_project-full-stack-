@@ -71,7 +71,7 @@ const Interview = () => {
   const match = getMatchMessage(report.matchScore);
 
   return (
-    <div className="h-screen bg-[#0b0f19] text-white px-6 py-8">
+    <div className="h-screen bg-[#0b0f19] text-white px-6  py-23">
       <div className="max-w-7xl mx-auto grid lg:grid-cols-4 gap-8 h-full">
         {/* SIDEBAR */}
         <div className="bg-[#111827] border border-white/10 rounded-xl p-6 flex flex-col">

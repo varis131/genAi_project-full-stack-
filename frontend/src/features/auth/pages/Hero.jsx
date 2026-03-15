@@ -10,20 +10,20 @@ const Hero = () => {
     user?.username?.split(" ")[0] || user?.username || user?.email || "there";
 
   const sectionClasses =
-    "hero-bg relative min-h-screen overflow-hidden px-4 text-white";
+    "hero-bg relative min-h-screen overflow-hidden px-4 pt-9 text-white";
 
   const headerTextColor = "text-gray-400";
-  const subHeaderPillText = "text-rose-200/90";
+  const subHeaderPillText = "text-pink-300/90";
   const bodyTextColor = "text-gray-300";
-  const smallAccentText = "text-rose-200/90";
+  const smallAccentText = "text-pink-300/90";
   const secondaryButtonClasses =
-    "rounded-full border border-rose-300/40 bg-black/40 px-8 py-3 text-sm font-semibold text-rose-100 transition hover:bg-rose-500/10";
+    "rounded-full border border-pink-300/40 bg-black/40 px-8 py-3 text-sm font-semibold text-pink-200 transition hover:bg-pink-500/10";
   const testimonialsHeaderText = "text-gray-400";
   const testimonialsButtonText = "text-gray-500";
   const testimonialCardBase =
-    "min-w-[240px] rounded-2xl border p-4 text-xs transition-transform duration-200 ease-out hover:scale-[1.02] hover:-translate-y-0.5 hover:border-rose-400 hover:shadow-[0_0_30px_rgba(248,113,113,0.55)]";
+    "min-w-[240px] rounded-2xl border p-4 text-xs transition-transform duration-200 ease-out hover:scale-[1.02] hover:-translate-y-0.5 hover:border-pink-400 hover:shadow-[0_0_30px_rgba(236,72,153,0.55)]";
   const testimonialCardClasses = `${testimonialCardBase} border-white/10 bg-black/40 text-gray-200`;
-  const testimonialHandleText = "text-rose-200";
+  const testimonialHandleText = "text-pink-300";
   const testimonialBodyText = "text-gray-300";
 
   return (
@@ -31,19 +31,19 @@ const Hero = () => {
       {/* floating star dots */}
       <div className="pointer-events-none absolute inset-0">
         <div
-          className="star-dot absolute left-10 top-24 h-1.5 w-1.5 rounded-full bg-rose-300/90"
+          className="star-dot absolute left-10 top-24 h-1.5 w-1.5 rounded-full bg-pink-400/90"
           style={{ animationDelay: "0s" }}
         />
         <div
-          className="star-dot absolute right-12 top-40 h-1.5 w-1.5 rounded-full bg-amber-300/90"
+          className="star-dot absolute right-12 top-40 h-1.5 w-1.5 rounded-full bg-indigo-300/90"
           style={{ animationDelay: "1.2s" }}
         />
         <div
-          className="star-dot absolute left-1/3 bottom-32 h-1.5 w-1.5 rounded-full bg-rose-400/90"
+          className="star-dot absolute left-1/3 bottom-32 h-1.5 w-1.5 rounded-full bg-fuchsia-400/90"
           style={{ animationDelay: "2.4s" }}
         />
         <div
-          className="star-dot absolute right-1/4 bottom-16 h-1.5 w-1.5 rounded-full bg-sky-300/90"
+          className="star-dot absolute right-1/4 bottom-16 h-1.5 w-1.5 rounded-full bg-blue-300/90"
           style={{ animationDelay: "3.4s" }}
         />
       </div>
@@ -53,7 +53,7 @@ const Hero = () => {
           className={`mb-8 flex items-center justify-between text-[11px] ${headerTextColor}`}
         >
           <span className="flex items-center gap-2">
-            <span className="h-1.5 w-1.5 rounded-full bg-rose-400 shadow-[0_0_12px_rgba(248,113,113,0.9)]" />
+            <span className="h-1.5 w-1.5 rounded-full bg-pink-400 shadow-[0_0_12px_rgba(236,72,153,0.9)]" />
             InterviewCraft
           </span>
           <span
@@ -65,15 +65,15 @@ const Hero = () => {
 
         <div className="flex flex-col items-center text-center md:items-center">
           {/* animated logo */}
-          <div className="logo-float mb-6 flex h-24 w-24 items-center justify-center rounded-full bg-gradient-to-b from-rose-500 to-orange-500 shadow-[0_0_60px_rgba(248,113,113,0.9)]">
-            <div className="flex h-14 w-14 items-center justify-center rounded-full border border-rose-200/80 bg-black/40">
-              <div className="h-3 w-3 rounded-full bg-rose-300 shadow-[0_0_20px_rgba(248,113,113,0.9)]" />
+          <div className="logo-float mb-6 flex h-24 w-24 items-center justify-center rounded-full bg-gradient-to-b from-pink-500 to-fuchsia-500 shadow-[0_0_60px_rgba(236,72,153,0.9)]">
+            <div className="flex h-14 w-14 items-center justify-center rounded-full border border-pink-200/80 bg-black/40">
+              <div className="h-3 w-3 rounded-full bg-pink-300 shadow-[0_0_20px_rgba(236,72,153,0.9)]" />
             </div>
           </div>
 
           <h1 className="text-3xl font-semibold md:text-5xl">
             The AI that actually{" "}
-            <span className="bg-gradient-to-r from-rose-300 via-orange-300 to-amber-200 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-pink-400 via-fuchsia-400 to-blue-300 bg-clip-text text-transparent">
               prepares you
             </span>
             .
@@ -81,9 +81,9 @@ const Hero = () => {
 
           <p className={`mt-4 max-w-2xl text-sm md:text-base ${bodyTextColor}`}>
             Turn any job description, your resume and how you describe yourself
-            into a complete interview game‑plan: match score, realistic
+            into a complete interview game-plan: match score, realistic
             technical & behavioral questions with model answers, skill gaps, a
-            day‑by‑day prep schedule and an ATS‑friendly PDF resume.
+            day-by-day prep schedule and an ATS-friendly PDF resume.
           </p>
 
           <p className={`mt-3 text-xs ${smallAccentText}`}>
@@ -93,9 +93,9 @@ const Hero = () => {
           <div className="mt-7 flex flex-wrap items-center justify-center gap-4">
             <button
               type="button"
-              className="rounded-full bg-gradient-to-r from-rose-500 to-orange-500 
-              px-8 py-3 text-sm font-semibold text-black shadow-[0_0_40px_rgba(248,113,113,0.9)]
-               transition hover:from-rose-400 hover:to-orange-400 cursor-pointer"
+              className="rounded-full bg-gradient-to-r from-pink-500 to-fuchsia-500 
+              px-8 py-3 text-sm font-semibold text-black shadow-[0_0_40px_rgba(236,72,153,0.9)]
+               transition hover:from-pink-400 hover:to-fuchsia-400 cursor-pointer"
               onClick={() => navigate("/home")}
             >
               Start Preparing
@@ -108,11 +108,11 @@ const Hero = () => {
             className={`flex items-center justify-between text-[11px] ${testimonialsHeaderText}`}
           >
             <span className="flex items-center gap-2 cursor-pointer">
-              <span className="text-rose-400">›</span>
+              <span className="text-pink-400">›</span>
               What people say
             </span>
             <button
-              className={`text-[10px] uppercase tracking-[0.18em] ${testimonialsButtonText} hover:text-rose-300`}
+              className={`text-[10px] uppercase tracking-[0.18em] ${testimonialsButtonText} hover:text-pink-300`}
             >
               View all
             </button>
@@ -124,9 +124,7 @@ const Hero = () => {
                 @frontend_dev
               </p>
               <p className={`italic ${testimonialBodyText}`}>
-                “The match score and daily plan made it way easier to focus. I
-                walked into my last interview knowing exactly what they&apos;d
-                ask.”
+                “The match score and daily plan made it way easier to focus.”
               </p>
             </article>
 
@@ -135,8 +133,7 @@ const Hero = () => {
                 @datascience_girl
               </p>
               <p className={`italic ${testimonialBodyText}`}>
-                “The behavioral questions plus suggested answers felt scary‑real
-                to what I was actually asked on the call.”
+                “The behavioral questions plus suggested answers felt real.”
               </p>
             </article>
 
@@ -145,8 +142,7 @@ const Hero = () => {
                 @systemdesign_guy
               </p>
               <p className={`italic ${testimonialBodyText}`}>
-                “Having a day‑by‑day plan for the week before interviews removed
-                so much stress. It&apos;s like a coach sitting next to you.”
+                “Having a day-by-day plan removed so much stress.”
               </p>
             </article>
           </div>

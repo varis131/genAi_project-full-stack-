@@ -1,12 +1,27 @@
 @import "tailwindcss";
 
+body {
+  background-color: #020617;
+}
+
 .hero-bg {
   background-color: #020617;
   background-image:
-    radial-gradient(circle at 0% -20%, rgba(248, 113, 113, 0.35), transparent 55%),
-    radial-gradient(circle at 100% 120%, rgba(59, 130, 246, 0.18), transparent 55%),
+    radial-gradient(
+      circle at 0% -20%,
+      rgba(248, 113, 113, 0.35),
+      transparent 55%
+    ),
+    radial-gradient(
+      circle at 100% 120%,
+      rgba(59, 130, 246, 0.18),
+      transparent 55%
+    ),
     radial-gradient(circle, rgba(15, 23, 42, 0.9) 1px, transparent 0);
-  background-size: 100% 100%, 100% 100%, 26px 26px;
+  background-size:
+    100% 100%,
+    100% 100%,
+    26px 26px;
   animation: heroStars 18s linear infinite;
 }
 
@@ -43,10 +58,16 @@
 
 @keyframes heroStars {
   0% {
-    background-position: 0 0, 0 0, 0 0;
+    background-position:
+      0 0,
+      0 0,
+      0 0;
   }
   100% {
-    background-position: 0 0, 0 0, 0 120px;
+    background-position:
+      0 0,
+      0 0,
+      0 120px;
   }
 }
 
