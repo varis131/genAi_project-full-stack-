@@ -49,3 +49,13 @@
     background-position: 0 0, 0 0, 0 120px;
   }
 }
+
+/* Hide scrollbar but keep scroll working */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
