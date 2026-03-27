@@ -46,7 +46,7 @@ const Login = () => {
         </h1>
 
         <p className="text-center text-gray-400 text-sm mb-8">
-          Welcome back to <span className="text-pink-400">AI Interview</span>
+          Welcome back to <span className="text-pink-400">IntelliView</span>
         </p>
 
         <form onSubmit={handleSubmit} className="space-y-6">

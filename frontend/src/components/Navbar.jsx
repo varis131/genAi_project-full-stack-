@@ -22,7 +22,7 @@ const Navbar = () => {
           to="/"
           className="text-white font-extrabold text-lg tracking-wide hover:scale-105 transition duration-300"
         >
-          AI Interview
+          Home
         </Link>
 
         {/* Menu */}

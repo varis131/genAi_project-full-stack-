@@ -47,7 +47,7 @@ const Register = () => {
         </h1>
 
         <p className="text-center text-gray-400 text-sm mb-8">
-          Join <span className="text-pink-400">AI Interview</span> today 🚀
+          Join <span className="text-pink-400">IntelliView</span> today 🚀
         </p>
 
         <form onSubmit={handleSubmit} className="space-y-6">

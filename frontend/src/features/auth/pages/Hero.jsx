@@ -65,10 +65,22 @@ const Hero = () => {
 
         <div className="flex flex-col items-center text-center md:items-center">
           {/* animated logo */}
-          <div className="logo-float mb-6 flex h-24 w-24 items-center justify-center rounded-full bg-gradient-to-b from-pink-500 to-fuchsia-500 shadow-[0_0_60px_rgba(236,72,153,0.9)]">
-            <div className="flex h-14 w-14 items-center justify-center rounded-full border border-pink-200/80 bg-black/40">
-              <div className="h-3 w-3 rounded-full bg-pink-300 shadow-[0_0_20px_rgba(236,72,153,0.9)]" />
-            </div>
+          <div className="logo-float mb-6 flex items-center justify-center">
+            <h1
+              className=" text-4xl md:text-5xl font-extrabold tracking-wide
+      
+                          bg-gradient-to-r from-pink-400 via-fuchsia-500 to-purple-500
+                          bg-clip-text text-transparent
+      
+                          animate-pulse
+      
+                          drop-shadow-[0_0_20px_rgba(236,72,153,0.6)]
+      
+                          transition duration-300
+                          hover:scale-105 cursor-pointer "
+            >
+              Intelli<span className="text-white">View</span>
+            </h1>
           </div>
 
           <h1 className="text-3xl font-semibold md:text-5xl">
