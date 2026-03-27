@@ -22,26 +22,33 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     await handleRegister(formData);
-    console.log(formData);
     navigate("/login");
   };
 
   return (
     <div
-      className="hero-bg relative min-h-screen flex items-center justify-center 
-                    overflow-hidden px-4 text-white"
+      className="relative min-h-screen flex items-center justify-center px-4 text-white overflow-hidden
+      bg-gradient-to-br from-[#1a0b2e] via-[#0b0f19] to-[#020617]"
     >
+      {/* Glow Effects */}
+      <div className="absolute w-[500px] h-[500px] bg-pink-500/20 blur-[120px] top-[-100px] left-[-100px] rounded-full"></div>
+      <div className="absolute w-[400px] h-[400px] bg-purple-500/20 blur-[120px] bottom-[-100px] right-[-100px] rounded-full"></div>
+
       {/* Card */}
       <div
         className="relative w-full max-w-md 
-                      bg-white/5 backdrop-blur-2xl 
-                      border border-white/10 
-                      rounded-2xl p-10 shadow-2xl"
+        bg-white/5 backdrop-blur-xl 
+        border border-white/10 
+        rounded-2xl p-10 shadow-2xl"
       >
         {/* Heading */}
-        <h1 className="text-3xl font-semibold text-center mb-8">
+        <h1 className="text-3xl font-semibold text-center mb-2">
           Create your account
         </h1>
+
+        <p className="text-center text-gray-400 text-sm mb-8">
+          Join <span className="text-pink-400">AI Interview</span> today 🚀
+        </p>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Username */}
@@ -55,11 +62,11 @@ const Register = () => {
               onChange={handleChange}
               required
               className="w-full px-4 py-3 rounded-lg 
-                         bg-white/5 border border-white/10 
-                         text-white placeholder-gray-500
-                         focus:outline-none focus:ring-2 
-                         focus:ring-rose-400 focus:border-rose-400
-                         transition"
+                bg-white/5 border border-white/10 
+                text-white placeholder-gray-500
+                focus:outline-none focus:ring-2 
+                focus:ring-pink-500 focus:border-pink-500
+                transition"
             />
           </div>
 
@@ -76,11 +83,11 @@ const Register = () => {
               onChange={handleChange}
               required
               className="w-full px-4 py-3 rounded-lg 
-                         bg-white/5 border border-white/10 
-                         text-white placeholder-gray-500
-                         focus:outline-none focus:ring-2 
-                         focus:ring-rose-400 focus:border-rose-400
-                         transition"
+                bg-white/5 border border-white/10 
+                text-white placeholder-gray-500
+                focus:outline-none focus:ring-2 
+                focus:ring-pink-500 focus:border-pink-500
+                transition"
             />
           </div>
 
@@ -95,11 +102,11 @@ const Register = () => {
               onChange={handleChange}
               required
               className="w-full px-4 py-3 rounded-lg 
-                         bg-white/5 border border-white/10 
-                         text-white placeholder-gray-500
-                         focus:outline-none focus:ring-2 
-                         focus:ring-rose-400 focus:border-rose-400
-                         transition"
+                bg-white/5 border border-white/10 
+                text-white placeholder-gray-500
+                focus:outline-none focus:ring-2 
+                focus:ring-pink-500 focus:border-pink-500
+                transition"
             />
           </div>
 
@@ -108,11 +115,11 @@ const Register = () => {
             type="submit"
             disabled={loading}
             className="w-full py-3 rounded-lg font-semibold text-white
-             bg-gradient-to-r from-rose-500 to-orange-500
-             hover:from-rose-400 hover:to-orange-400
-             transition duration-200 shadow-lg
-             flex items-center justify-center gap-2
-             disabled:opacity-60 disabled:cursor-not-allowed"
+              bg-gradient-to-r from-pink-500 to-purple-500
+              hover:from-pink-400 hover:to-purple-400
+              hover:scale-[1.02]
+              transition flex items-center justify-center gap-2
+              disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
           >
             {loading ? (
               <>
@@ -130,7 +137,7 @@ const Register = () => {
           Already have an account?{" "}
           <Link
             to="/login"
-            className="text-rose-300 hover:text-rose-200 font-medium"
+            className="text-pink-400 hover:text-pink-300 font-medium"
           >
             Sign in
           </Link>
