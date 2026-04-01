@@ -3,6 +3,7 @@ import {
   getInterviewReportById,
   getAllInterviewReports,
   generateResumePdf,
+  deleteInterviewReport,
 } from "../services/interview.api";
 
 import { useContext } from "react";
@@ -80,6 +81,18 @@ export const useInterview = () => {
     }
   };
 
+  const deleteReport = async (interviewId) => {
+    try {
+      await deleteInterviewReport(interviewId);
+      // Remove the deleted report from local state if it exists
+      if (reports) {
+        setReports(reports.filter((r) => r._id !== interviewId));
+      }
+    } catch (error) {
+      console.error("Error deleting interview report:", error);
+    }
+  };
+
   return {
     loading,
     report,
@@ -88,5 +101,6 @@ export const useInterview = () => {
     getReportById,
     getReports,
     downloadResumePdf,
+    deleteReport,
   };
 };

@@ -9,6 +9,13 @@ const Interview = () => {
 
   const [activeSection, setActiveSection] = useState("technical");
   const [openIndex, setOpenIndex] = useState(null);
+  const [isGeneratingResume, setIsGeneratingResume] = useState(false);
+
+  const handleDownloadResume = async () => {
+    setIsGeneratingResume(true);
+    await downloadResumePdf(report._id);
+    setIsGeneratingResume(false);
+  };
 
   useEffect(() => {
     if (interviewId) {
@@ -71,10 +78,10 @@ const Interview = () => {
   const match = getMatchMessage(report.matchScore);
 
   return (
-    <div className="h-screen bg-[#0b0f19] text-white px-6  py-23">
-      <div className="max-w-7xl mx-auto grid lg:grid-cols-4 gap-8 h-full">
+    <div className="h-[100dvh] bg-[#0b0f19] text-white px-4 sm:px-6 pt-24 pb-6 overflow-hidden">
+      <div className="max-w-7xl mx-auto grid lg:grid-cols-12 gap-6 h-full pt-4">
         {/* SIDEBAR */}
-        <div className="bg-[#111827] border border-white/10 rounded-xl p-6 flex flex-col">
+        <div className="lg:col-span-3 bg-[#111827] border border-white/10 rounded-2xl p-6 flex flex-col h-full shadow-lg">
           <p className="text-xs text-gray-400 uppercase tracking-wider mb-6">
             Sections
           </p>
@@ -116,48 +123,81 @@ const Interview = () => {
               Road Map
             </button>
           </div>
+
+          {/* DOWNLOAD BUTTON */}
+          <div className="mt-auto pt-6">
+            <button
+              onClick={handleDownloadResume}
+              disabled={isGeneratingResume}
+              className="w-full py-3 rounded-xl bg-gradient-to-r from-pink-500 to-purple-500 
+              font-semibold hover:opacity-90 transition flex justify-center items-center gap-2 
+              disabled:opacity-70 disabled:cursor-not-allowed cursor-pointer"
+            >
+              {isGeneratingResume ? (
+                <>
+                  <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                  Generating Resume...
+                </>
+              ) : (
+                "Download Resume PDF"
+              )}
+            </button>
+          </div>
         </div>
 
         {/* MAIN CONTENT */}
-        <div className="lg:col-span-2 overflow-y-auto no-scrollbar pr-2 space-y-6">
+        <div className="lg:col-span-6 overflow-y-auto no-scrollbar pr-2 space-y-6 pb-10">
           {/* TECHNICAL QUESTIONS */}
           {activeSection === "technical" && (
             <>
-              <h2 className="text-2xl font-bold flex items-center gap-3">
-                Technical Questions
-                <span className="text-xs bg-white/10 px-3 py-1 rounded">
+              <div className="flex items-center justify-between pb-2 border-b border-white/5">
+                <h2 className="text-2xl font-bold text-white tracking-wide">
+                  Technical Questions
+                </h2>
+                <span className="text-xs font-semibold bg-pink-500/10 text-pink-400 px-3 py-1.5 rounded-full border border-pink-500/20">
                   {report.technicalQuestions.length} questions
                 </span>
-              </h2>
+              </div>
 
               {report.technicalQuestions.map((q, i) => (
                 <div
                   key={i}
-                  className="bg-[#111827] border border-white/10 rounded-xl"
+                  className="bg-[#111827] border border-white/10 rounded-2xl overflow-hidden shadow-lg transition-all duration-300 hover:border-white/20"
                 >
                   <button
                     onClick={() => setOpenIndex(openIndex === i ? null : i)}
-                    className="w-full text-left p-5 flex justify-between items-start"
+                    className="w-full text-left p-5 flex justify-between items-start gap-4 hover:bg-white/[0.02] transition-colors"
                   >
-                    <div className="flex items-start gap-3">
-                      <span className="bg-pink-500/20 text-pink-400 text-xs font-bold px-3 py-1 rounded">
+                    <div className="flex items-start gap-4">
+                      <span className="shrink-0 flex items-center justify-center w-8 h-8 rounded-lg bg-pink-500/10 text-pink-400 text-xs font-bold border border-pink-500/20">
                         Q{i + 1}
                       </span>
 
-                      <span className="font-medium leading-relaxed">
+                      <span className="font-medium leading-relaxed text-gray-200 mt-1">
                         {q.question}
                       </span>
                     </div>
 
-                    <span className="text-gray-400">
+                    <span className="text-gray-400 mt-1 flex items-center justify-center w-6 h-6 rounded-full bg-white/5 shrink-0">
                       {openIndex === i ? "-" : "+"}
                     </span>
                   </button>
 
                   {openIndex === i && (
-                    <div className="px-5 pb-5 text-sm text-gray-400">
-                      <p className="mb-3">{q.intention}</p>
-                      <p>{q.answer}</p>
+                    <div className="px-5 pb-5 pt-2 text-sm text-gray-400 animate-in fade-in zoom-in-95 duration-200">
+                      <div className="p-4 bg-black/20 rounded-xl border border-white/5">
+                        <p className="text-gray-300 font-medium mb-2 flex items-center gap-2">
+                          <span className="w-1.5 h-1.5 rounded-full bg-pink-500"></span>
+                          Intention
+                        </p>
+                        <p className="mb-4 leading-relaxed">{q.intention}</p>
+                        
+                        <p className="text-gray-300 font-medium mb-2 flex items-center gap-2">
+                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                          Sample Answer
+                        </p>
+                        <p className="leading-relaxed">{q.answer}</p>
+                      </div>
                     </div>
                   )}
                 </div>
@@ -168,41 +208,54 @@ const Interview = () => {
           {/* BEHAVIORAL QUESTIONS */}
           {activeSection === "behavioral" && (
             <>
-              <h2 className="text-2xl font-bold flex items-center gap-3">
-                Behavioral Questions
-                <span className="text-xs bg-white/10 px-3 py-1 rounded">
+              <div className="flex items-center justify-between pb-2 border-b border-white/5">
+                <h2 className="text-2xl font-bold text-white tracking-wide">
+                  Behavioral Questions
+                </h2>
+                <span className="text-xs font-semibold bg-purple-500/10 text-purple-400 px-3 py-1.5 rounded-full border border-purple-500/20">
                   {report.behavioralQuestions.length} questions
                 </span>
-              </h2>
+              </div>
 
               {report.behavioralQuestions.map((q, i) => (
                 <div
                   key={i}
-                  className="bg-[#111827] border border-white/10 rounded-xl"
+                  className="bg-[#111827] border border-white/10 rounded-2xl overflow-hidden shadow-lg transition-all duration-300 hover:border-white/20"
                 >
                   <button
                     onClick={() => setOpenIndex(openIndex === i ? null : i)}
-                    className="w-full text-left p-5 flex justify-between items-start"
+                    className="w-full text-left p-5 flex justify-between items-start gap-4 hover:bg-white/[0.02] transition-colors"
                   >
-                    <div className="flex items-start gap-3">
-                      <span className="bg-purple-500/20 text-purple-400 text-xs font-bold px-3 py-1 rounded">
+                    <div className="flex items-start gap-4">
+                      <span className="shrink-0 flex items-center justify-center w-8 h-8 rounded-lg bg-purple-500/10 text-purple-400 text-xs font-bold border border-purple-500/20">
                         Q{i + 1}
                       </span>
 
-                      <span className="font-medium leading-relaxed">
+                      <span className="font-medium leading-relaxed text-gray-200 mt-1">
                         {q.question}
                       </span>
                     </div>
 
-                    <span className="text-gray-400">
+                    <span className="text-gray-400 mt-1 flex items-center justify-center w-6 h-6 rounded-full bg-white/5 shrink-0">
                       {openIndex === i ? "-" : "+"}
                     </span>
                   </button>
 
                   {openIndex === i && (
-                    <div className="px-5 pb-5 text-sm text-gray-400">
-                      <p className="mb-3">{q.intention}</p>
-                      <p>{q.answer}</p>
+                    <div className="px-5 pb-5 pt-2 text-sm text-gray-400 animate-in fade-in zoom-in-95 duration-200">
+                      <div className="p-4 bg-black/20 rounded-xl border border-white/5">
+                        <p className="text-gray-300 font-medium mb-2 flex items-center gap-2">
+                          <span className="w-1.5 h-1.5 rounded-full bg-purple-500"></span>
+                          Intention
+                        </p>
+                        <p className="mb-4 leading-relaxed">{q.intention}</p>
+                        
+                        <p className="text-gray-300 font-medium mb-2 flex items-center gap-2">
+                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                          Sample Answer
+                        </p>
+                        <p className="leading-relaxed">{q.answer}</p>
+                      </div>
                     </div>
                   )}
                 </div>
@@ -213,22 +266,36 @@ const Interview = () => {
           {/* ROADMAP */}
           {activeSection === "roadmap" && (
             <>
-              <h2 className="text-2xl font-bold mb-4">Preparation Roadmap</h2>
+              <div className="flex items-center justify-between pb-2 border-b border-white/5 mb-4">
+                <h2 className="text-2xl font-bold text-white tracking-wide">
+                  Preparation Roadmap
+                </h2>
+              </div>
 
               {report.preparationPlan?.map((plan, i) => (
                 <div
                   key={i}
-                  className="bg-[#111827] border border-white/10 rounded-xl p-5"
+                  className="bg-[#111827] border border-white/10 rounded-2xl p-6 shadow-lg hover:border-white/20 transition-all duration-300"
                 >
-                  <h3 className="text-lg font-semibold text-pink-400 mb-2">
-                    Day {plan.day}
-                  </h3>
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-pink-500 to-purple-500 p-[2px]">
+                      <div className="w-full h-full bg-[#111827] rounded-full flex items-center justify-center font-bold text-white">
+                        {plan.day}
+                      </div>
+                    </div>
+                    <h3 className="text-lg font-semibold text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-purple-400">
+                      Day {plan.day} Focus
+                    </h3>
+                  </div>
 
-                  <p className="text-sm text-gray-300 mb-3">{plan.focus}</p>
+                  <p className="text-md text-gray-200 mb-4 bg-white/5 p-3 rounded-lg border border-white/5">{plan.focus}</p>
 
-                  <ul className="list-disc ml-5 text-sm text-gray-400 space-y-1">
+                  <ul className="space-y-3">
                     {plan.tasks?.map((task, idx) => (
-                      <li key={idx}>{task}</li>
+                      <li key={idx} className="flex items-start gap-3 text-sm text-gray-400">
+                        <span className="w-2 h-2 rounded-full bg-pink-500 mt-1.5 shrink-0"></span>
+                        <span className="leading-relaxed">{task}</span>
+                      </li>
                     ))}
                   </ul>
                 </div>
@@ -238,49 +305,49 @@ const Interview = () => {
         </div>
 
         {/* RIGHT PANEL */}
-        <div className="overflow-y-auto no-scrollbar space-y-6">
+        <div className="lg:col-span-3 overflow-y-auto no-scrollbar space-y-6 pb-10">
           {/* MATCH SCORE */}
-          <div className="bg-[#111827] border border-white/10 rounded-xl p-6 text-center">
-            <p className="text-xs text-gray-400 uppercase tracking-wider">
+          <div className="bg-[#111827] border border-white/10 rounded-2xl p-6 text-center shadow-lg relative overflow-hidden group hover:border-white/20 transition-all duration-300">
+            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-blue-500 to-transparent opacity-30 group-hover:opacity-100 transition-opacity"></div>
+            
+            <p className="text-xs text-gray-400 uppercase tracking-wider font-semibold mb-6">
               Match Score
             </p>
 
-            <div className="mt-4 flex justify-center">
+            <div className="flex justify-center relative">
               <div
-                className={`w-32 h-32 rounded-full border-4 ${match.border} flex items-center justify-center`}
+                className={`w-36 h-36 rounded-full border-[6px] ${match.border} flex items-center justify-center relative z-10 bg-[#0b0f19] shadow-[inset_0_0_20px_rgba(0,0,0,0.5)]`}
               >
-                <span className={`text-3xl font-bold ${match.color}`}>
+                <span className={`text-4xl font-black ${match.color} drop-shadow-md`}>
                   {report.matchScore}%
                 </span>
               </div>
+              <div className={`absolute inset-0 m-auto w-36 h-36 rounded-full bg-current ${match.color} blur-2xl opacity-10 animate-pulse`}></div>
             </div>
 
-            <p className={`${match.color} text-sm mt-3`}>{match.text}</p>
+            <p className={`font-medium ${match.color} mt-6 bg-white/5 inline-block px-4 py-2 rounded-full border border-current/10`}>
+              {match.text}
+            </p>
           </div>
 
           {/* SKILL GAPS */}
-          <div className="bg-[#111827] border border-white/10 rounded-xl p-6">
-            <h3 className="text-sm uppercase text-gray-400 mb-4">Skill Gaps</h3>
+          <div className="bg-[#111827] border border-white/10 rounded-2xl p-6 shadow-lg">
+            <h3 className="text-xs uppercase text-gray-400 font-semibold mb-5 flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-purple-500"></span>
+              Skill Gaps
+            </h3>
 
-            <div className="space-y-2">
+            <div className="space-y-3">
               {report.skillGaps.map((gap, i) => (
                 <div
                   key={i}
-                  className="px-3 py-2 rounded-lg bg-black/40 text-sm"
+                  className="px-4 py-3 rounded-xl bg-white/5 border border-white/5 text-sm text-gray-300 hover:bg-white/10 hover:border-white/10 transition-colors cursor-default"
                 >
                   {gap.skill}
                 </div>
               ))}
             </div>
           </div>
-
-          {/* DOWNLOAD BUTTON */}
-          <button
-            onClick={() => downloadResumePdf(report._id)}
-            className="w-full py-3 rounded-xl bg-gradient-to-r from-pink-500 to-purple-500 font-semibold hover:opacity-90 transition"
-          >
-            Download Resume PDF
-          </button>
         </div>
       </div>
     </div>

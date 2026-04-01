@@ -5,6 +5,7 @@ const {
   getInterviewReportByIdController,
   getAllInterviewReportsController,
   generateResumePdfController,
+  deleteInterviewReportController,
 } = require("../controllers/interview.controller");
 const upload = require("../middlewares/file.middleware");
 
@@ -49,6 +50,17 @@ interviewRouter.post(
   "/resume/pdf/:interviewReportId",
   authUser,
   generateResumePdfController,
+);
+
+/**
+ * @route DELETE /api/interview/report/:interviewId
+ * @description delete an interview report.
+ * @access private
+ */
+interviewRouter.delete(
+  "/report/:interviewId",
+  authUser,
+  deleteInterviewReportController,
 );
 
 module.exports = interviewRouter;

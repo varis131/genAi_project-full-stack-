@@ -84,7 +84,7 @@ const Hero = () => {
           </div>
 
           <h1 className="text-3xl font-semibold md:text-5xl">
-            The AI that actually{" "}
+            The Interview Coach that actually{" "}
             <span className="bg-gradient-to-r from-pink-400 via-fuchsia-400 to-blue-300 bg-clip-text text-transparent">
               prepares you
             </span>

@@ -9,8 +9,11 @@ const interviewReportModel = require("../models/interviewReport.model");
  * @description Controller to generate interview report based on user self description, resume and job description.
  */
 async function generateInterViewReportController(req, res) {
-  const pdf = await pdfParse(req.file.buffer);
-  const resumeContent = pdf.text;
+  let resumeContent = "";
+  if (req.file) {
+    const pdf = await pdfParse(req.file.buffer);
+    resumeContent = pdf.text;
+  }
   const { selfDescription, jobDescription } = req.body;
 
   const interViewReportByAi = await generateInterviewReport({
@@ -109,9 +112,32 @@ async function generateResumePdfController(req, res) {
   res.send(pdfBuffer);
 }
 
+/**
+ * @description Controller to delete an interview report by ID.
+ */
+async function deleteInterviewReportController(req, res) {
+  const { interviewId } = req.params;
+
+  const interviewReport = await interviewReportModel.findOneAndDelete({
+    _id: interviewId,
+    user: req.user.id,
+  });
+
+  if (!interviewReport) {
+    return res.status(404).json({
+      message: "Interview report not found or already deleted.",
+    });
+  }
+
+  res.status(200).json({
+    message: "Interview report deleted successfully.",
+  });
+}
+
 module.exports = {
   generateInterViewReportController,
   getInterviewReportByIdController,
   getAllInterviewReportsController,
   generateResumePdfController,
+  deleteInterviewReportController,
 };
