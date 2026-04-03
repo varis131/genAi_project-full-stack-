@@ -120,8 +120,8 @@ async function loginUserController(req, res) {
     // set cookie
     res.cookie("token", token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
+      secure: true, // must be true in production
+      sameSite: "None", // 🔥 MOST IMPORTANT
       maxAge: 24 * 60 * 60 * 1000,
     });
 
