@@ -62,6 +62,7 @@ async function registerUserController(req, res) {
         username: user.username,
         email: user.email,
       },
+      token,
     });
   } catch (error) {
     console.error(error);
@@ -119,6 +120,7 @@ async function loginUserController(req, res) {
         username: user.username,
         email: user.email,
       },
+      token,
     });
   } catch (error) {
     console.error(error);

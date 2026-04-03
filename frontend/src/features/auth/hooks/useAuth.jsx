@@ -10,6 +10,9 @@ export const useAuth = () => {
     try {
       setLoading(true);
       const data = await login({ email, password });
+      if (data.token) {
+        localStorage.setItem("token", data.token);
+      }
       setUser(data.user);
     } catch (error) {
       console.error("Login failed:", error.response?.data || error.message);
@@ -23,6 +26,9 @@ export const useAuth = () => {
     try {
       setLoading(true);
       const data = await register({ username, email, password });
+      if (data.token) {
+        localStorage.setItem("token", data.token);
+      }
       setUser(data.user);
     } catch (error) {
       console.error("Register failed:", error.response?.data || error.message);
@@ -36,6 +42,7 @@ export const useAuth = () => {
     try {
       setLoading(true);
       await logout();
+      localStorage.removeItem("token");
       setUser(null);
     } catch (error) {
       console.error("Logout failed:", error.response?.data || error.message);
