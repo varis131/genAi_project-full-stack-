@@ -4,6 +4,8 @@ const app = express();
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
 
+app.set("trust proxy", 1); // 🔥 VERY IMPORTANT for cookies on Render
+
 // 🔥 CORS Configuration
 app.use(
   cors({
