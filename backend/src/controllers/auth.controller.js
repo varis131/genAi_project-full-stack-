@@ -3,17 +3,24 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const Blacklist = require("../models/blacklist.model");
 
+const isProduction = process.env.NODE_ENV === "production";
+
+// 🔥 COMMON COOKIE OPTIONS
+const cookieOptions = {
+  httpOnly: true,
+  secure: true, // 🔥 ALWAYS TRUE for Render/Vercel
+  sameSite: "None", // 🔥 MUST for cross-origin
+  path: "/",
+  maxAge: 24 * 60 * 60 * 1000,
+};
+
 /**
- * @name registerUserController
- * @description Register a new user
- * @route POST /api/auth/register
- * @access Public
+ * REGISTER
  */
 async function registerUserController(req, res) {
   try {
     const { username, email, password } = req.body;
 
-    // all fields required
     if (!username || !email || !password) {
       return res.status(400).json({
         success: false,
@@ -21,7 +28,6 @@ async function registerUserController(req, res) {
       });
     }
 
-    // check if user already exists
     const isUserAlreadyExist = await userModel.findOne({
       $or: [{ username }, { email }],
     });
@@ -33,29 +39,20 @@ async function registerUserController(req, res) {
       });
     }
 
-    // hash password
     const hash = await bcrypt.hash(password, 10);
 
-    // create user
     const user = await userModel.create({
       username,
       email,
       password: hash,
     });
 
-    // create JWT
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
       expiresIn: "1d",
     });
 
-    const isProduction = process.env.NODE_ENV === "production";
-    // set cookie
-    res.cookie("token", token, {
-      httpOnly: true,
-      secure: isProduction,
-      sameSite: isProduction ? "None" : "Lax",
-      maxAge: 24 * 60 * 60 * 1000,
-    });
+    // 🔥 SET COOKIE
+    res.cookie("token", token, cookieOptions);
 
     return res.status(201).json({
       success: true,
@@ -76,16 +73,12 @@ async function registerUserController(req, res) {
 }
 
 /**
- * @name loginUserController
- * @description Login an existing user
- * @route POST /api/auth/login
- * @access Public
+ * LOGIN
  */
 async function loginUserController(req, res) {
   try {
     const { email, password } = req.body;
 
-    // check required fields
     if (!email || !password) {
       return res.status(400).json({
         success: false,
@@ -93,7 +86,6 @@ async function loginUserController(req, res) {
       });
     }
 
-    // find user (make sure password is selected)
     const user = await userModel.findOne({ email }).select("+password");
 
     if (!user) {
@@ -103,7 +95,6 @@ async function loginUserController(req, res) {
       });
     }
 
-    // compare password
     const isPasswordValid = await bcrypt.compare(password, user.password);
 
     if (!isPasswordValid) {
@@ -113,19 +104,12 @@ async function loginUserController(req, res) {
       });
     }
 
-    // generate JWT
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
       expiresIn: "1d",
     });
 
-    const isProduction = process.env.NODE_ENV === "production";
-    // set cookie
-    res.cookie("token", token, {
-      httpOnly: true,
-      secure: isProduction,
-      sameSite: isProduction ? "None" : "Lax",
-      maxAge: 24 * 60 * 60 * 1000,
-    });
+    // 🔥 SET COOKIE
+    res.cookie("token", token, cookieOptions);
 
     return res.status(200).json({
       success: true,
@@ -146,26 +130,22 @@ async function loginUserController(req, res) {
 }
 
 /**
- * @name logoutUserController
- * @description Logout a user by blacklisting their token
- * @route POST /api/auth/logout
- * @access Public
+ * LOGOUT
  */
 async function logoutUserController(req, res) {
   try {
     const token = req.cookies.token;
 
-    // blacklist only if token exists
     if (token) {
       await Blacklist.create({ token });
     }
 
-    const isProduction = process.env.NODE_ENV === "production";
-    // clear cookie (always)
+    // 🔥 CLEAR COOKIE (same options IMPORTANT)
     res.clearCookie("token", {
       httpOnly: true,
-      secure: isProduction,
-      sameSite: isProduction ? "None" : "Lax",
+      secure: true,
+      sameSite: "None",
+      path: "/",
     });
 
     return res.status(200).json({
@@ -182,10 +162,7 @@ async function logoutUserController(req, res) {
 }
 
 /**
- * @name getMeController
- * @description Get current user details using the token from cookies
- * @route GET /api/auth/get-me
- * @access Private
+ * GET ME
  */
 async function getMeController(req, res) {
   try {
