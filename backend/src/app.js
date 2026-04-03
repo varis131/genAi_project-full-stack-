@@ -9,7 +9,7 @@ app.use(
   cors({
     origin: [
       "http://localhost:5173",
-      "https://gen-ai-project-full-stack-dnbmnpd8g-movaris85-1628s-projects.vercel.app",
+      /\.vercel\.app$/, // 🔥 ALL vercel domains allowed
     ],
     credentials: true,
   }),
