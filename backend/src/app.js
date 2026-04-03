@@ -7,7 +7,10 @@ const cors = require("cors");
 // 🔥 CORS Configuration
 app.use(
   cors({
-    origin: "https://your-vercel-url.vercel.app",
+    origin: [
+      "http://localhost:5173",
+      "https://gen-ai-project-full-stack-dnbmnpd8g-movaris85-1628s-projects.vercel.app",
+    ],
     credentials: true,
   }),
 );
