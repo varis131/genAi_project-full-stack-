@@ -7,8 +7,8 @@ const cors = require("cors");
 // 🔥 CORS Configuration
 app.use(
   cors({
-    origin: "http://localhost:5173", // frontend URL
-    credentials: true, // allow cookies
+    origin: "https://your-vercel-url.vercel.app",
+    credentials: true,
   }),
 );
 
