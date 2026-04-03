@@ -153,17 +153,12 @@ async function logoutUserController(req, res) {
   try {
     const token = req.cookies.token;
 
-    if (!token) {
-      return res.status(400).json({
-        success: false,
-        message: "No token provided",
-      });
+    // blacklist only if token exists
+    if (token) {
+      await Blacklist.create({ token });
     }
 
-    // blacklist token
-    await Blacklist.create({ token });
-
-    // clear cookie
+    // clear cookie (always)
     res.clearCookie("token", {
       httpOnly: true,
       secure: true,
