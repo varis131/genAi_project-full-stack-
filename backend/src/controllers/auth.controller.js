@@ -185,23 +185,39 @@ async function logoutUserController(req, res) {
  * @access Private
  */
 async function getMeController(req, res) {
-  const user = await userModel.findById(req.user.id);
+  try {
+    if (!req.user) {
+      return res.status(401).json({
+        success: false,
+        message: "Unauthorized",
+      });
+    }
 
-  if (!user) {
-    return res.status(404).json({
+    const user = await userModel.findById(req.user.id);
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "User details fetched successfully",
+      user: {
+        id: user._id,
+        username: user.username,
+        email: user.email,
+      },
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
       success: false,
-      message: "User not found",
+      message: "Server Error",
     });
   }
-  return res.status(200).json({
-    success: true,
-    message: "User details fetched successfully",
-    user: {
-      id: user._id,
-      username: user.username,
-      email: user.email,
-    },
-  });
 }
 
 module.exports = {
