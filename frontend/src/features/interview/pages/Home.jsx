@@ -47,7 +47,7 @@ const Home = () => {
       </div>
 
       {/* MAIN CONTAINER */}
-      <div className="w-full max-w-6xl bg-[#111827] border border-white/10 rounded-2xl p-8 grid grid-cols-1 md:grid-cols-2 gap-10">
+      <div className="w-full max-w-6xl bg-[#111827] border border-white/10 rounded-2xl p-5 lg:p-8 grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10">
         {/* LEFT SIDE */}
         <div className="flex flex-col h-full">
           <div className="flex items-center gap-3 mb-3 shrink-0">
@@ -63,7 +63,7 @@ const Home = () => {
 e.g. Senior Frontend Engineer at Google requires proficiency in React, TypeScript..."
             value={jobDescription}
             onChange={(e) => setJobDescription(e.target.value)}
-            className="flex-1 w-full bg-[#0f172a] border border-white/10 rounded-xl p-4 outline-none focus:border-pink-500 transition resize-none min-h-[320px]"
+            className="flex-1 w-full bg-[#0f172a] border border-white/10 rounded-xl p-4 outline-none focus:border-pink-500 transition resize-none min-h-[200px] lg:min-h-[320px]"
           />
 
           <p className="text-xs text-gray-500 mt-2 text-right shrink-0">
@@ -83,7 +83,7 @@ e.g. Senior Frontend Engineer at Google requires proficiency in React, TypeScrip
           </div>
 
           {/* RESUME BOX */}
-          <label className="cursor-pointer border border-dashed border-white/20 rounded-xl p-8 flex flex-col items-center justify-center text-center bg-[#0f172a] hover:border-pink-500 transition">
+          <label className="cursor-pointer border border-dashed border-white/20 rounded-xl p-6 lg:p-8 flex flex-col items-center justify-center text-center bg-[#0f172a] hover:border-pink-500 transition">
             <input
               type="file"
               onChange={(e) => setResumeFile(e.target.files[0])}
@@ -150,7 +150,7 @@ e.g. Senior Frontend Engineer at Google requires proficiency in React, TypeScrip
             Recently Generated Strategies
           </h3>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {reports.map((r) => (
               <div
                 key={r._id}

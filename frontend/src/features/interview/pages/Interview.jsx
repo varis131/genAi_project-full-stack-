@@ -78,48 +78,48 @@ const Interview = () => {
   const match = getMatchMessage(report.matchScore);
 
   return (
-    <div className="h-[100dvh] bg-[#0b0f19] text-white px-4 sm:px-6 pt-24 pb-6 overflow-hidden">
-      <div className="max-w-7xl mx-auto grid lg:grid-cols-12 gap-6 h-full pt-4">
+    <div className="min-h-screen lg:h-[100dvh] bg-[#0b0f19] text-white px-4 sm:px-6 pt-24 pb-6 overflow-y-auto lg:overflow-hidden">
+      <div className="max-w-7xl mx-auto flex flex-col lg:grid lg:grid-cols-12 gap-6 lg:h-full pt-4">
         {/* SIDEBAR */}
-        <div className="lg:col-span-3 bg-[#111827] border border-white/10 rounded-2xl p-6 flex flex-col h-full shadow-lg">
-          <p className="text-xs text-gray-400 uppercase tracking-wider mb-6">
+        <div className="order-2 lg:order-1 lg:col-span-3 bg-[#111827] border border-white/10 rounded-2xl p-6 flex flex-col lg:h-full shadow-lg">
+          <p className="text-xs text-gray-400 uppercase tracking-wider mb-4 lg:mb-6 hidden lg:block">
             Sections
           </p>
 
-          <div className="space-y-2">
+          <div className="flex flex-row overflow-x-auto lg:flex-col space-x-2 lg:space-x-0 lg:space-y-2 pb-2 lg:pb-0 no-scrollbar">
             <button
               onClick={() => setActiveSection("technical")}
-              className={`flex items-center gap-3 px-4 py-3 rounded-lg transition ${
+              className={`flex items-center gap-2 lg:gap-3 px-4 py-2 lg:py-3 rounded-lg transition whitespace-nowrap ${
                 activeSection === "technical"
                   ? "bg-pink-500/20 text-pink-400"
                   : "text-gray-300 hover:bg-white/5"
               }`}
             >
-              <Code2 size={18} />
+              <Code2 size={18} className="shrink-0" />
               Technical Questions
             </button>
 
             <button
               onClick={() => setActiveSection("behavioral")}
-              className={`flex items-center gap-3 px-4 py-3 rounded-lg transition ${
+              className={`flex items-center gap-2 lg:gap-3 px-4 py-2 lg:py-3 rounded-lg transition whitespace-nowrap ${
                 activeSection === "behavioral"
                   ? "bg-pink-500/20 text-pink-400"
                   : "text-gray-300 hover:bg-white/5"
               }`}
             >
-              <MessageSquare size={18} />
+              <MessageSquare size={18} className="shrink-0" />
               Behavioral Questions
             </button>
 
             <button
               onClick={() => setActiveSection("roadmap")}
-              className={`flex items-center gap-3 px-4 py-3 rounded-lg transition ${
+              className={`flex items-center gap-2 lg:gap-3 px-4 py-2 lg:py-3 rounded-lg transition whitespace-nowrap ${
                 activeSection === "roadmap"
                   ? "bg-pink-500/20 text-pink-400"
                   : "text-gray-300 hover:bg-white/5"
               }`}
             >
-              <Send size={18} />
+              <Send size={18} className="shrink-0" />
               Road Map
             </button>
           </div>
@@ -146,7 +146,7 @@ const Interview = () => {
         </div>
 
         {/* MAIN CONTENT */}
-        <div className="lg:col-span-6 overflow-y-auto no-scrollbar pr-2 space-y-6 pb-10">
+        <div className="order-3 lg:order-2 lg:col-span-6 overflow-y-auto no-scrollbar pr-0 lg:pr-2 space-y-6 lg:pb-10">
           {/* TECHNICAL QUESTIONS */}
           {activeSection === "technical" && (
             <>
@@ -305,9 +305,9 @@ const Interview = () => {
         </div>
 
         {/* RIGHT PANEL */}
-        <div className="lg:col-span-3 overflow-y-auto no-scrollbar space-y-6 pb-10">
+        <div className="order-1 lg:order-3 lg:col-span-3 overflow-y-auto no-scrollbar space-y-4 lg:space-y-6 lg:pb-10 flex flex-col sm:flex-row lg:flex-col gap-4 sm:gap-6 lg:gap-0">
           {/* MATCH SCORE */}
-          <div className="bg-[#111827] border border-white/10 rounded-2xl p-6 text-center shadow-lg relative overflow-hidden group hover:border-white/20 transition-all duration-300">
+          <div className="flex-1 bg-[#111827] border border-white/10 rounded-2xl p-6 text-center shadow-lg relative overflow-hidden group hover:border-white/20 transition-all duration-300">
             <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-blue-500 to-transparent opacity-30 group-hover:opacity-100 transition-opacity"></div>
             
             <p className="text-xs text-gray-400 uppercase tracking-wider font-semibold mb-6">
@@ -331,7 +331,7 @@ const Interview = () => {
           </div>
 
           {/* SKILL GAPS */}
-          <div className="bg-[#111827] border border-white/10 rounded-2xl p-6 shadow-lg">
+          <div className="flex-1 bg-[#111827] border border-white/10 rounded-2xl p-6 shadow-lg">
             <h3 className="text-xs uppercase text-gray-400 font-semibold mb-5 flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-purple-500"></span>
               Skill Gaps
