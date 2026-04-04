@@ -15,7 +15,7 @@
 
 ## 🌐 Live Demo
 
-👉 https://your-live-link.vercel.app/
+👉 https://gen-ai-project-full-stack.vercel.app
 
 ---
 
