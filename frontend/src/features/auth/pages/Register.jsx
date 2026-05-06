@@ -22,38 +22,38 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     await handleRegister(formData);
-    navigate("/login");
+    navigate("/");
   };
 
   return (
     <div
       className="relative min-h-screen flex items-center justify-center px-4 text-white overflow-hidden
-      bg-gradient-to-br from-[#1a0b2e] via-[#0b0f19] to-[#020617]"
+      bg-slate-950"
     >
       {/* Glow Effects */}
-      <div className="absolute w-[500px] h-[500px] bg-pink-500/20 blur-[120px] top-[-100px] left-[-100px] rounded-full"></div>
+      <div className="absolute w-[500px] h-[500px] bg-indigo-500/20 blur-[120px] top-[-100px] left-[-100px] rounded-full"></div>
       <div className="absolute w-[400px] h-[400px] bg-purple-500/20 blur-[120px] bottom-[-100px] right-[-100px] rounded-full"></div>
 
       {/* Card */}
       <div
         className="relative w-full max-w-md 
-        bg-white/5 backdrop-blur-xl 
+        bg-slate-900/60 backdrop-blur-xl 
         border border-white/10 
-        rounded-2xl p-10 shadow-2xl"
+        rounded-3xl p-10 shadow-2xl"
       >
         {/* Heading */}
         <h1 className="text-3xl font-semibold text-center mb-2">
           Create your account
         </h1>
 
-        <p className="text-center text-gray-400 text-sm mb-8">
-          Join <span className="text-pink-400">IntelliView</span> today 🚀
+        <p className="text-center text-slate-400 text-sm mb-8">
+          Join <span className="text-indigo-400 font-medium">IntelliView</span> today 🚀
         </p>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Username */}
           <div>
-            <label className="block text-sm text-gray-300 mb-2">Username</label>
+            <label className="block text-sm text-slate-300 mb-2">Username</label>
             <input
               type="text"
               name="username"
@@ -62,17 +62,17 @@ const Register = () => {
               onChange={handleChange}
               required
               className="w-full px-4 py-3 rounded-lg 
-                bg-white/5 border border-white/10 
-                text-white placeholder-gray-500
+                bg-slate-950/50 border border-white/10 
+                text-white placeholder-slate-500
                 focus:outline-none focus:ring-2 
-                focus:ring-pink-500 focus:border-pink-500
+                focus:ring-indigo-500 focus:border-indigo-500
                 transition"
             />
           </div>
 
           {/* Email */}
           <div>
-            <label className="block text-sm text-gray-300 mb-2">
+            <label className="block text-sm text-slate-300 mb-2">
               Email address
             </label>
             <input
@@ -83,17 +83,17 @@ const Register = () => {
               onChange={handleChange}
               required
               className="w-full px-4 py-3 rounded-lg 
-                bg-white/5 border border-white/10 
-                text-white placeholder-gray-500
+                bg-slate-950/50 border border-white/10 
+                text-white placeholder-slate-500
                 focus:outline-none focus:ring-2 
-                focus:ring-pink-500 focus:border-pink-500
+                focus:ring-indigo-500 focus:border-indigo-500
                 transition"
             />
           </div>
 
           {/* Password */}
           <div>
-            <label className="block text-sm text-gray-300 mb-2">Password</label>
+            <label className="block text-sm text-slate-300 mb-2">Password</label>
             <input
               type="password"
               name="password"
@@ -102,10 +102,10 @@ const Register = () => {
               onChange={handleChange}
               required
               className="w-full px-4 py-3 rounded-lg 
-                bg-white/5 border border-white/10 
-                text-white placeholder-gray-500
+                bg-slate-950/50 border border-white/10 
+                text-white placeholder-slate-500
                 focus:outline-none focus:ring-2 
-                focus:ring-pink-500 focus:border-pink-500
+                focus:ring-indigo-500 focus:border-indigo-500
                 transition"
             />
           </div>
@@ -115,10 +115,10 @@ const Register = () => {
             type="submit"
             disabled={loading}
             className="w-full py-3 rounded-lg font-semibold text-white
-              bg-gradient-to-r from-pink-500 to-purple-500
-              hover:from-pink-400 hover:to-purple-400
-              hover:scale-[1.02]
-              transition flex items-center justify-center gap-2
+              bg-gradient-to-r from-indigo-500 to-purple-600
+              hover:from-indigo-400 hover:to-purple-500
+              hover:scale-[1.02] active:scale-95
+              transition-all flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(99,102,241,0.2)]
               disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
           >
             {loading ? (
@@ -133,11 +133,11 @@ const Register = () => {
         </form>
 
         {/* Footer */}
-        <p className="text-center text-gray-400 text-sm mt-8">
+        <p className="text-center text-slate-400 text-sm mt-8">
           Already have an account?{" "}
           <Link
             to="/login"
-            className="text-pink-400 hover:text-pink-300 font-medium"
+            className="text-indigo-400 hover:text-indigo-300 font-medium transition-colors"
           >
             Sign in
           </Link>
