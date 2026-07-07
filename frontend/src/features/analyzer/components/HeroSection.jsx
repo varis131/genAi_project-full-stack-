@@ -1,81 +1,233 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { Upload, Sparkles, ArrowRight, CheckCircle2 } from 'lucide-react';
+import React, { useEffect, useRef } from "react";
 
-
+/* ──────────────────────────────────────────────────────────
+   HERO SECTION
+   Signature visual: annotated interview transcript card
+────────────────────────────────────────────────────────── */
 const HeroSection = ({ onUploadClick }) => {
+  const heroRef = useRef(null);
+
+  // Stagger animate-in children on mount
+  useEffect(() => {
+    const els = heroRef.current?.querySelectorAll(".animate-in");
+    els?.forEach((el, i) => {
+      el.style.animationDelay = `${i * 0.09 + 0.04}s`;
+    });
+  }, []);
+
   return (
-    <div className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
-      {/* Background ambient light effects */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-indigo-500/20 rounded-full blur-[120px] opacity-50 pointer-events-none"></div>
-      
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="text-center max-w-4xl mx-auto">
-          {/* Animated AI Badge */}
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 mb-8"
-          >
-            <Sparkles className="w-4 h-4 text-purple-400" />
-            <span className="text-sm text-slate-300 font-medium">Powered by Next-Gen AI Models</span>
-          </motion.div>
+    <section className="hero" ref={heroRef} aria-labelledby="hero-headline">
+      {/* Background decoration */}
+      <div className="hero-bg-grid" aria-hidden="true" />
+      <div className="hero-glow" aria-hidden="true" />
 
-          {/* Main Headline */}
-          <motion.h1 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-            className="text-5xl lg:text-7xl font-extrabold tracking-tight text-white mb-6 leading-tight"
-          >
-            Analyze Your Resume <br className="hidden md:block"/>
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400">
-              with AI Precision
-            </span>
-          </motion.h1>
+      <div className="container-xl">
+        <div className="hero-inner">
 
-          <motion.p 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="text-lg lg:text-xl text-slate-400 mb-10 max-w-2xl mx-auto"
-          >
-            Get instant feedback on your resume, match it against job descriptions, and discover the exact skills you need to land your dream job.
-          </motion.p>
+          {/* ── LEFT COLUMN: Copy ── */}
+          <div>
+            {/* Badge */}
+            <div className="hero-badge animate-in" aria-label="Powered by Gemini AI">
+              Gemini AI · Line-by-line feedback
+            </div>
 
-          {/* Call to Action Buttons */}
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-            className="flex flex-col sm:flex-row items-center justify-center gap-4"
-          >
-            <button 
-              onClick={onUploadClick}
-              className="w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-semibold rounded-full hover:shadow-[0_0_30px_rgba(99,102,241,0.4)] transition-all flex items-center justify-center gap-2"
-            >
-              <Upload className="w-5 h-5" />
-              Start Your Analysis
-            </button>
-          </motion.div>
+            {/* Headline */}
+            <h1 id="hero-headline" className="hero-headline animate-in animate-in-1">
+              Your interview,<br />
+              <em>annotated</em><br />
+              by AI.
+            </h1>
 
-          {/* Quick Features List */}
-          <motion.div 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.6 }}
-            className="mt-16 flex flex-wrap justify-center gap-x-8 gap-y-4 text-slate-400 text-sm"
-          >
-            {['1. Upload Resume', '2. Add Job Description', '3. Add Self Description', '4. Get Strategy'].map((text, i) => (
-              <div key={i} className="flex items-center gap-2">
-                <CheckCircle2 className="w-5 h-5 text-indigo-400" />
-                <span>{text}</span>
+            {/* Sub */}
+            <p className="hero-sub animate-in animate-in-2">
+              Upload your resume, and IntelliView builds a real interview around it — behavioral, DSA, system design — then breaks down every answer you give. Not a score. A breakdown.
+            </p>
+
+            {/* CTAs */}
+            <div className="hero-actions animate-in animate-in-3">
+              <button
+                id="hero-start-btn"
+                className="btn-hero-primary"
+                onClick={onUploadClick}
+                aria-label="Start your free mock interview"
+              >
+                Start preparing
+                <svg width="18" height="18" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                  <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </button>
+              <a
+                href="#how-it-works"
+                className="btn-hero-secondary"
+                aria-label="Learn how IntelliView works"
+              >
+                See how it works
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                  <path d="M8 3v10M4 9l4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </a>
+            </div>
+
+            {/* Trust signal */}
+            <div className="hero-trust animate-in animate-in-4" aria-label="Used by many candidates">
+              <div className="hero-trust-avatars" aria-hidden="true">
+                {["AR", "KP", "MJ", "TS", "DL"].map((init, i) => (
+                  <div key={i} className="hero-trust-avatar">{init}</div>
+                ))}
               </div>
-            ))}
-          </motion.div>
+              <span>Used by engineers preparing for FAANG, startups &amp; beyond</span>
+            </div>
+          </div>
+
+          {/* ── RIGHT COLUMN: Transcript card ── */}
+          <div className="animate-in animate-in-3" aria-hidden="true" style={{ position: "relative" }}>
+            {/* Score floating chip */}
+            <div className="score-ring-wrap">
+              <div>
+                <div className="score-label">Session<br/>Score</div>
+              </div>
+              <div className="score-value">74<span style={{ fontSize: "1rem", color: "var(--text-3)" }}>/100</span></div>
+            </div>
+
+            <div className="transcript-card">
+              {/* Toolbar */}
+              <div className="transcript-toolbar">
+                <div className="tc-dot tc-dot-r" />
+                <div className="tc-dot tc-dot-y" />
+                <div className="tc-dot tc-dot-g" />
+                <span className="transcript-toolbar-title">mock-interview · round-1.txt</span>
+              </div>
+
+              {/* Transcript turns */}
+              <div className="transcript-body">
+
+                {/* Q1 */}
+                <div className="t-turn">
+                  <span className="t-label interviewer">Interviewer</span>
+                  <p className="t-text" style={{ color: "var(--text-1)", margin: 0 }}>
+                    Tell me about a time you improved system performance under tight deadlines.
+                  </p>
+                </div>
+
+                {/* A1 — annotated */}
+                <div className="t-turn">
+                  <span className="t-label candidate">You</span>
+                  <p className="t-text" style={{ margin: 0, lineHeight: 1.8 }}>
+                    <span className="ann-filler">Um, so</span>{" "}
+                    at my last job I was tasked with{" "}
+                    <span className="ann-weak t-annotated" style={{ position: "relative" }}>
+                      fixing some slow queries
+                      {/* Margin note */}
+                      <span
+                        className="margin-note"
+                        style={{ display: "block", top: "-10px", right: "-196px" }}
+                      >
+                        <span className="margin-note-label mn-warn">⚠ Vague</span>
+                        Quantify: "reduced p95 latency from 2.1s → 340ms"
+                      </span>
+                    </span>
+                    {" "}before the product launch.{" "}
+                    <span className="ann-strong">
+                      I added composite indexes on the orders table and rewrote
+                      three N+1 loops using batch fetching
+                    </span>
+                    {", "}
+                    which{" "}
+                    <span className="ann-strong">
+                      cut API response time by 68%
+                    </span>
+                    .{" "}
+                    <span className="ann-filler">Like</span>, it was shipped on time.
+                  </p>
+                </div>
+
+                {/* Q2 */}
+                <div className="t-turn">
+                  <span className="t-label interviewer">Interviewer</span>
+                  <p className="t-text" style={{ color: "var(--text-1)", margin: 0 }}>
+                    How did stakeholders respond?
+                  </p>
+                </div>
+
+                {/* A2 */}
+                <div className="t-turn">
+                  <span className="t-label candidate">You</span>
+                  <p className="t-text" style={{ margin: 0, lineHeight: 1.8, color: "var(--text-3)" }}>
+                    <span style={{ fontStyle: "italic" }}>Typing…</span>
+                    <span
+                      style={{
+                        display: "inline-block",
+                        width: "2px",
+                        height: "0.85em",
+                        background: "var(--accent)",
+                        marginLeft: "2px",
+                        verticalAlign: "middle",
+                        animation: "cursorBlink 1.1s step-end infinite"
+                      }}
+                    />
+                  </p>
+                </div>
+              </div>
+
+              {/* AI feedback pill at bottom */}
+              <div className="ai-feedback-pill">
+                <div className="ai-feedback-pill-icon">
+                  <svg width="11" height="11" viewBox="0 0 16 16" fill="none">
+                    <path d="M8 2l1.8 3.6L14 6.5l-3 2.9.7 4.1L8 11.4l-3.7 2.1.7-4.1L2 6.5l4.2-.9L8 2z" fill="white"/>
+                  </svg>
+                </div>
+                <p className="ai-feedback-pill-text">
+                  <strong>Gemini:</strong> Good structure. The "68% reduction" is a strong quantified outcome.
+                  Remove filler words (<span style={{ color: "var(--danger)", fontFamily: "var(--font-mono)", fontSize: "0.72rem" }}>"um so", "like"</span>)
+                  and expand the stakeholder impact for a more complete STAR response.
+                </p>
+              </div>
+            </div>
+
+            {/* Legend */}
+            <div
+              style={{
+                display: "flex",
+                gap: "1rem",
+                marginTop: "0.75rem",
+                paddingLeft: "0.25rem",
+                flexWrap: "wrap"
+              }}
+            >
+              {[
+                { color: "var(--danger)", label: "Filler word" },
+                { color: "var(--warn)", label: "Vague claim" },
+                { color: "var(--accent-3)", label: "Strong answer" },
+              ].map(({ color, label }) => (
+                <span
+                  key={label}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "0.35rem",
+                    fontFamily: "var(--font-mono)",
+                    fontSize: "0.67rem",
+                    color: "var(--text-3)",
+                  }}
+                >
+                  <span
+                    style={{
+                      width: "8px", height: "8px",
+                      borderRadius: "2px",
+                      background: color,
+                      opacity: 0.9,
+                      flexShrink: 0
+                    }}
+                  />
+                  {label}
+                </span>
+              ))}
+            </div>
+          </div>
+
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 

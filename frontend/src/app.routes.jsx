@@ -3,6 +3,7 @@ import Login from "./features/auth/pages/Login";
 import Register from "./features/auth/pages/Register";
 import Home from "./features/interview/pages/Home";
 import Interview from "./features/interview/pages/Interview";
+import LiveInterview from "./features/interview/pages/LiveInterview";
 import AnalyzerPage from "./features/analyzer/pages/AnalyzerPage";
 import Protected from "./features/auth/components/Protected";
 import MainLayout from "./layouts/MainLayout";
@@ -34,6 +35,10 @@ export const router = createBrowserRouter([
       {
         path: "/interview/:interviewId",
         element: <Interview />,
+      },
+      {
+        path: "/live-interview/:interviewId",
+        element: <LiveInterview />,
       },
     ],
   },

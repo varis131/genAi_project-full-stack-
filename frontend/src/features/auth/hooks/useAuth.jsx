@@ -1,10 +1,13 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { AuthContext } from "../auth.context";
-import { login, register, logout, getMe } from "../services/auth.api";
+import { login, register, logout } from "../services/auth.api";
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
-  const { user, setUser, loading, setLoading } = context;
+  const { user, setUser, isCheckingAuth } = context;
+
+  
+  const [loading, setLoading] = useState(false);
 
   const handleLogin = async ({ email, password }) => {
     try {
@@ -16,7 +19,7 @@ export const useAuth = () => {
       setUser(data.user);
     } catch (error) {
       console.error("Login failed:", error.response?.data || error.message);
-      throw error; // optional: agar component me handle karna ho
+      throw error;
     } finally {
       setLoading(false);
     }
@@ -52,5 +55,5 @@ export const useAuth = () => {
     }
   };
 
-  return { user, loading, handleLogin, handleLogout, handleRegister };
+  return { user, isCheckingAuth, loading, handleLogin, handleLogout, handleRegister };
 };

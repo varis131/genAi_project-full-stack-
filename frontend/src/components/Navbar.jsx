@@ -1,67 +1,89 @@
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../features/auth/hooks/useAuth";
 import { Link, useLocation, useNavigate } from "react-router";
-import { BrainCircuit, LogOut, LayoutDashboard, FileText } from "lucide-react";
+import { LogOut } from "lucide-react";
 
 const Navbar = () => {
-  const { handleLogout } = useAuth();
+  const { user, handleLogout } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
   const [scrolled, setScrolled] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 10);
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    const handleScroll = () => setScrolled(window.scrollY > 16);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const onLogout = async () => {
     await handleLogout();
-    navigate('/login');
+    navigate("/login");
   };
 
-  const navItem = "relative text-sm font-medium transition-colors hover:text-white flex items-center gap-2";
+  const handleCTA = () => {
+    if (!user) navigate("/login");
+    else navigate("/home");
+  };
+
+  const isLanding = location.pathname === "/";
 
   return (
-    <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${scrolled ? 'bg-slate-950/80 backdrop-blur-md border-b border-white/10 shadow-sm' : 'bg-transparent pt-4'}`}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
-          {/* Logo */}
-          <Link to="/" className="flex items-center gap-2 cursor-pointer group">
-            <div className="p-1.5 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-lg group-hover:shadow-[0_0_15px_rgba(99,102,241,0.5)] transition-all">
-              <BrainCircuit className="text-white w-5 h-5" />
-            </div>
-            <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400 tracking-tight">
-              IntelliView
-            </span>
-          </Link>
+    <nav
+      className={`navbar ${scrolled ? "scrolled" : ""}`}
+      role="navigation"
+      aria-label="Primary navigation"
+    >
+      <div className="container-xl navbar-inner">
+        {/* Logo */}
+        <Link to="/" className="nav-logo" aria-label="IntelliView home">
+          <div className="nav-logo-mark" aria-hidden="true">IV</div>
+          <span className="nav-logo-text">IntelliView</span>
+        </Link>
 
-          {/* Links */}
-          <div className="hidden md:flex items-center gap-8 bg-slate-900/60 backdrop-blur-md border border-white/10 px-6 py-2.5 rounded-full shadow-lg">
-            <Link
-              to="/home"
-              className={`${navItem} ${location.pathname === "/home" ? "text-indigo-400" : "text-slate-400"}`}
-            >
-              <LayoutDashboard className="w-4 h-4" /> Plan Interview
-            </Link>
+        {/* Center nav links (landing only) */}
+        {isLanding && (
+          <ul className="nav-links" role="list">
+            <li>
+              <a href="#features" className="nav-link">Features</a>
+            </li>
+            <li>
+              <a href="#how-it-works" className="nav-link">How it works</a>
+            </li>
+            <li>
+              <a href="#feedback" className="nav-link">AI Feedback</a>
+            </li>
+            <li>
+              <a href="#report" className="nav-link">Reports</a>
+            </li>
+          </ul>
+        )}
 
-            <Link
-              to="/home" 
-              className={`${navItem} ${location.pathname.includes("/interview") ? "text-indigo-400" : "text-slate-400"}`}
-            >
-              <FileText className="w-4 h-4" /> Reports
-            </Link>
-          </div>
-
-          {/* Logout Button */}
-          <div className="flex items-center">
-            <button
-              onClick={onLogout}
-              className="px-4 py-2 border border-white/10 bg-white/5 text-white text-sm font-semibold rounded-full hover:bg-white/10 transition-all flex items-center gap-2"
-            >
-              <LogOut className="w-4 h-4" /> <span className="hidden sm:inline">Sign Out</span>
-            </button>
-          </div>
+        {/* CTA */}
+        <div className="nav-cta">
+          {user ? (
+            <>
+              <Link to="/home" className="btn-ghost">Dashboard</Link>
+              <button
+                onClick={onLogout}
+                className="btn-ghost"
+                style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}
+              >
+                <LogOut size={14} />
+                Sign out
+              </button>
+            </>
+          ) : (
+            <>
+              <Link to="/login" className="btn-ghost">Sign in</Link>
+              <button onClick={handleCTA} className="btn-primary">
+                Start free
+                <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                  <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </button>
+            </>
+          )}
         </div>
       </div>
     </nav>
