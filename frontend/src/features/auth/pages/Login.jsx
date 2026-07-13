@@ -27,157 +27,439 @@ const Login = () => {
   };
 
   return (
-    <div
-      className="relative min-h-screen flex items-center justify-center px-4 text-white overflow-hidden
-      bg-slate-950"
-    >
-      {/* Glow Background */}
-      <div className="absolute w-[500px] h-[500px] bg-indigo-500/20 blur-[120px] top-[-100px] left-[-100px] rounded-full"></div>
-      <div className="absolute w-[400px] h-[400px] bg-purple-500/20 blur-[120px] bottom-[-100px] right-[-100px] rounded-full"></div>
+    <div style={styles.page}>
+      {/* Background grid */}
+      <div style={styles.bgGrid} aria-hidden="true" />
+      {/* Radial glow */}
+      <div style={styles.glow} aria-hidden="true" />
 
       {/* Main Card */}
-      <div className="relative w-full max-w-5xl flex rounded-3xl overflow-hidden border border-white/10 bg-slate-900/60 backdrop-blur-xl shadow-2xl">
-        {/* 🔥 LEFT SIDE */}
-        <div
-          className="hidden md:flex flex-col justify-center w-1/2 p-12 
-          bg-gradient-to-br from-white/5 to-transparent border-r border-white/10 relative"
-        >
-          {/* subtle glow */}
-          <div className="absolute w-72 h-72 bg-indigo-500/10 blur-[100px] rounded-full -z-10"></div>
+      <div style={styles.card}>
 
-          <h1 className="text-4xl font-extrabold mb-6 tracking-wide flex items-center gap-2">
-            Intelli<span className="text-indigo-400">View</span>
+        {/* ── LEFT SIDE: Branding ── */}
+        <div style={styles.leftPanel}>
+          {/* inner glow accent */}
+          <div style={styles.leftGlow} aria-hidden="true" />
+
+          {/* Badge */}
+          <div style={styles.badge}>
+            <span style={styles.badgeDot} />
+            Gemini AI · Resume Intelligence
+          </div>
+
+          {/* Logo / Brand */}
+          <h1 style={styles.brandHeadline}>
+            Intelli<em style={styles.brandEm}>View</em>
           </h1>
 
-          <p className="text-slate-300 mb-8 leading-relaxed max-w-md">
-            The next-generation AI Resume Analyzer. Discover your ATS score, skill gaps, and get personalized interview coaching.
+          <p style={styles.brandSub}>
+            The next-generation AI Resume Analyzer. Discover your ATS score,
+            skill gaps, and get personalized interview coaching.
           </p>
 
-          <ul className="space-y-4 text-sm">
+          {/* Feature list */}
+          <ul style={styles.featureList}>
             {[
               "ATS Match Scoring",
               "Job Description Matching",
               "Skill Gap Analysis",
               "AI Interview Coach",
             ].map((item, i) => (
-              <li key={i} className="flex items-center gap-3 text-slate-300">
-                <div className="w-2 h-2 rounded-full bg-indigo-500 shadow-[0_0_10px_rgba(99,102,241,0.8)]"></div>
+              <li key={i} style={styles.featureItem}>
+                <span style={styles.featureDot} />
                 {item}
               </li>
             ))}
           </ul>
 
-          <p className="mt-10 text-sm text-slate-500">
-            Secure your dream job today 🚀
-          </p>
+          <p style={styles.tagline}>Secure your dream job today 🚀</p>
         </div>
 
-        {/* 🔐 RIGHT SIDE */}
-        <div className="w-full md:w-1/2 p-12">
-          <h1 className="text-3xl font-semibold text-center mb-2">
-            Sign in to your account
-          </h1>
-
-          <p className="text-center text-slate-400 text-sm mb-8">
-            Welcome back to <span className="text-indigo-400">IntelliView</span>
+        {/* ── RIGHT SIDE: Form ── */}
+        <div style={styles.rightPanel}>
+          <h2 style={styles.formHeading}>Sign in to your account</h2>
+          <p style={styles.formSub}>
+            Welcome back to{" "}
+            <span style={{ color: "var(--accent)" }}>IntelliView</span>
           </p>
 
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit} style={styles.form}>
             {/* Email */}
-            <div>
-              <label className="block text-sm text-slate-300 mb-2">
-                Email address
-              </label>
+            <div style={styles.fieldGroup}>
+              <label style={styles.label}>Email address</label>
               <input
+                id="login-email"
                 type="email"
                 name="email"
                 placeholder="you@example.com"
                 value={formData.email}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-3 rounded-lg 
-                  bg-slate-950/50 border border-white/10 
-                  text-white placeholder-slate-500
-                  focus:outline-none focus:ring-2 
-                  focus:ring-indigo-500 focus:border-indigo-500
-                  transition"
+                style={styles.input}
+                onFocus={e => Object.assign(e.target.style, styles.inputFocus)}
+                onBlur={e => Object.assign(e.target.style, { borderColor: "var(--border-mid)", boxShadow: "none" })}
               />
             </div>
 
             {/* Password */}
-            <div>
-              <div className="flex justify-between mb-2">
-                <label className="text-sm text-slate-300">Password</label>
-                <span className="text-sm text-indigo-400 hover:text-indigo-300 cursor-pointer transition-colors">
-                  Forgot password?
-                </span>
+            <div style={styles.fieldGroup}>
+              <div style={styles.labelRow}>
+                <label style={styles.label}>Password</label>
+                <span style={styles.forgotLink}>Forgot password?</span>
               </div>
-
-              <div className="relative">
+              <div style={{ position: "relative" }}>
                 <input
+                  id="login-password"
                   type={showPassword ? "text" : "password"}
                   name="password"
                   placeholder="Enter your password"
                   value={formData.password}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-3 pr-12 rounded-lg 
-                    bg-slate-950/50 border border-white/10 
-                    text-white placeholder-slate-500
-                    focus:outline-none focus:ring-2 
-                    focus:ring-indigo-500 focus:border-indigo-500
-                    transition"
+                  style={{ ...styles.input, paddingRight: "3rem" }}
+                  onFocus={e => Object.assign(e.target.style, styles.inputFocus)}
+                  onBlur={e => Object.assign(e.target.style, { borderColor: "var(--border-mid)", boxShadow: "none", paddingRight: "3rem" })}
                 />
-
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-indigo-400 transition"
+                  style={styles.eyeBtn}
+                  aria-label={showPassword ? "Hide password" : "Show password"}
                 >
-                  {showPassword ? (
-                    <EyeOff className="w-4 h-4" />
-                  ) : (
-                    <Eye className="w-4 h-4" />
-                  )}
+                  {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                 </button>
               </div>
             </div>
 
-            {/* Button */}
+            {/* Submit */}
             <button
+              id="login-submit-btn"
               type="submit"
               disabled={loading}
-              className="w-full py-3 rounded-lg font-semibold text-white
-                bg-gradient-to-r from-indigo-500 to-purple-600
-                hover:from-indigo-400 hover:to-purple-500
-                hover:scale-[1.02] active:scale-95
-                transition-all flex items-center justify-center gap-2 cursor-pointer shadow-[0_0_20px_rgba(99,102,241,0.2)]"
+              style={styles.submitBtn}
+              onMouseEnter={e => {
+                if (!loading) Object.assign(e.target.style, styles.submitBtnHover);
+              }}
+              onMouseLeave={e => {
+                Object.assign(e.target.style, { background: "var(--accent)", transform: "translateY(0)", boxShadow: "0 2px 20px rgba(79,116,255,0.35), inset 0 1px 0 rgba(255,255,255,0.15)" });
+              }}
             >
               {loading ? (
                 <>
-                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                  Signing in...
+                  <span style={styles.spinner} />
+                  Signing in…
                 </>
               ) : (
-                "Sign in"
+                <>
+                  Sign in
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                    <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </>
               )}
             </button>
           </form>
 
-          {/* Footer */}
-          <p className="text-center text-slate-400 text-sm mt-8">
-            Don’t have an account?{" "}
-            <Link
-              to="/register"
-              className="text-indigo-400 hover:text-indigo-300 font-medium transition-colors"
-            >
+          {/* Footer link */}
+          <p style={styles.footerText}>
+            Don't have an account?{" "}
+            <Link to="/register" style={styles.footerLink}>
               Register
             </Link>
           </p>
         </div>
       </div>
+
+      <style>{`
+        @keyframes spin {
+          to { transform: rotate(360deg); }
+        }
+        @keyframes fadeSlideUp {
+          from { opacity: 0; transform: translateY(18px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+      `}</style>
     </div>
   );
+};
+
+/* ── Inline style objects ── */
+const styles = {
+  page: {
+    position: "relative",
+    minHeight: "100vh",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    padding: "2rem 1rem",
+    background: "var(--ink)",
+    overflow: "hidden",
+    fontFamily: "var(--font-body)",
+  },
+  bgGrid: {
+    position: "absolute",
+    inset: 0,
+    backgroundImage:
+      "linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px)",
+    backgroundSize: "48px 48px",
+    maskImage: "radial-gradient(ellipse 90% 70% at 50% 0%, black 30%, transparent 100%)",
+    WebkitMaskImage: "radial-gradient(ellipse 90% 70% at 50% 0%, black 30%, transparent 100%)",
+    pointerEvents: "none",
+  },
+  glow: {
+    position: "absolute",
+    top: "-180px",
+    left: "50%",
+    transform: "translateX(-50%)",
+    width: "900px",
+    height: "600px",
+    background: "radial-gradient(ellipse, rgba(79,116,255,0.13) 0%, rgba(124,92,252,0.08) 40%, transparent 70%)",
+    pointerEvents: "none",
+  },
+  card: {
+    position: "relative",
+    width: "100%",
+    maxWidth: "900px",
+    display: "grid",
+    gridTemplateColumns: "1fr 1fr",
+    borderRadius: "20px",
+    overflow: "hidden",
+    border: "1px solid var(--border-mid)",
+    background: "rgba(17,24,39,0.7)",
+    backdropFilter: "blur(24px)",
+    WebkitBackdropFilter: "blur(24px)",
+    boxShadow: "0 32px 80px rgba(0,0,0,0.55), 0 1px 0 rgba(255,255,255,0.07) inset",
+    animation: "fadeSlideUp 0.45s ease both",
+  },
+  /* LEFT */
+  leftPanel: {
+    position: "relative",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    padding: "3rem 2.5rem",
+    background: "rgba(255,255,255,0.02)",
+    borderRight: "1px solid var(--border)",
+    overflow: "hidden",
+  },
+  leftGlow: {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%,-50%)",
+    width: "320px",
+    height: "320px",
+    borderRadius: "50%",
+    background: "radial-gradient(circle, rgba(79,116,255,0.09) 0%, transparent 70%)",
+    pointerEvents: "none",
+  },
+  badge: {
+    display: "inline-flex",
+    alignItems: "center",
+    gap: "0.5rem",
+    fontFamily: "var(--font-mono)",
+    fontSize: "0.68rem",
+    fontWeight: 500,
+    color: "var(--accent-3)",
+    letterSpacing: "0.05em",
+    textTransform: "uppercase",
+    padding: "0.28rem 0.7rem",
+    border: "1px solid rgba(34,211,165,0.25)",
+    borderRadius: "4px",
+    background: "rgba(34,211,165,0.07)",
+    marginBottom: "1.5rem",
+    width: "fit-content",
+  },
+  badgeDot: {
+    width: "6px",
+    height: "6px",
+    borderRadius: "50%",
+    background: "var(--accent-3)",
+    boxShadow: "0 0 8px var(--accent-3)",
+    display: "inline-block",
+    flexShrink: 0,
+  },
+  brandHeadline: {
+    fontFamily: "var(--font-display)",
+    fontSize: "clamp(2rem, 3.5vw, 2.8rem)",
+    fontWeight: 600,
+    lineHeight: 1.1,
+    letterSpacing: "-0.025em",
+    color: "var(--text-1)",
+    margin: "0 0 1rem",
+  },
+  brandEm: {
+    fontStyle: "italic",
+    fontWeight: 300,
+    color: "var(--accent)",
+  },
+  brandSub: {
+    fontSize: "0.875rem",
+    color: "var(--text-2)",
+    lineHeight: 1.75,
+    margin: "0 0 1.75rem",
+    maxWidth: "320px",
+  },
+  featureList: {
+    listStyle: "none",
+    margin: "0 0 1.75rem",
+    padding: 0,
+    display: "flex",
+    flexDirection: "column",
+    gap: "0.7rem",
+  },
+  featureItem: {
+    display: "flex",
+    alignItems: "center",
+    gap: "0.65rem",
+    fontSize: "0.875rem",
+    color: "var(--text-2)",
+    fontFamily: "var(--font-body)",
+  },
+  featureDot: {
+    width: "7px",
+    height: "7px",
+    borderRadius: "50%",
+    background: "var(--accent)",
+    boxShadow: "0 0 10px rgba(79,116,255,0.7)",
+    flexShrink: 0,
+  },
+  tagline: {
+    fontSize: "0.8rem",
+    color: "var(--text-3)",
+    margin: 0,
+    fontFamily: "var(--font-mono)",
+    letterSpacing: "0.03em",
+  },
+  /* RIGHT */
+  rightPanel: {
+    padding: "3rem 2.5rem",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+  },
+  formHeading: {
+    fontFamily: "var(--font-display)",
+    fontSize: "clamp(1.5rem, 2.5vw, 1.9rem)",
+    fontWeight: 600,
+    letterSpacing: "-0.02em",
+    color: "var(--text-1)",
+    margin: "0 0 0.4rem",
+    textAlign: "center",
+  },
+  formSub: {
+    fontSize: "0.875rem",
+    color: "var(--text-2)",
+    textAlign: "center",
+    margin: "0 0 2rem",
+    fontFamily: "var(--font-body)",
+  },
+  form: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "1.25rem",
+  },
+  fieldGroup: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "0.45rem",
+  },
+  labelRow: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  label: {
+    fontFamily: "var(--font-body)",
+    fontSize: "0.8125rem",
+    fontWeight: 500,
+    color: "var(--text-2)",
+  },
+  forgotLink: {
+    fontFamily: "var(--font-body)",
+    fontSize: "0.8125rem",
+    color: "var(--accent)",
+    cursor: "pointer",
+    transition: "color 0.18s",
+  },
+  input: {
+    width: "100%",
+    padding: "0.75rem 1rem",
+    borderRadius: "10px",
+    border: "1px solid var(--border-mid)",
+    background: "rgba(11,15,26,0.6)",
+    color: "var(--text-1)",
+    fontFamily: "var(--font-body)",
+    fontSize: "0.9rem",
+    outline: "none",
+    transition: "border-color 0.18s, box-shadow 0.18s",
+    boxSizing: "border-box",
+  },
+  inputFocus: {
+    borderColor: "var(--accent)",
+    boxShadow: "0 0 0 3px rgba(79,116,255,0.18)",
+  },
+  eyeBtn: {
+    position: "absolute",
+    right: "0.85rem",
+    top: "50%",
+    transform: "translateY(-50%)",
+    background: "transparent",
+    border: "none",
+    cursor: "pointer",
+    color: "var(--text-3)",
+    display: "flex",
+    alignItems: "center",
+    padding: 0,
+    transition: "color 0.18s",
+  },
+  submitBtn: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: "0.55rem",
+    width: "100%",
+    padding: "0.85rem 1.75rem",
+    borderRadius: "10px",
+    border: "none",
+    background: "var(--accent)",
+    color: "#fff",
+    fontFamily: "var(--font-body)",
+    fontSize: "0.9375rem",
+    fontWeight: 600,
+    cursor: "pointer",
+    transition: "background 0.2s, transform 0.15s, box-shadow 0.2s",
+    boxShadow: "0 2px 20px rgba(79,116,255,0.35), inset 0 1px 0 rgba(255,255,255,0.15)",
+    marginTop: "0.25rem",
+  },
+  submitBtnHover: {
+    background: "#6389ff",
+    transform: "translateY(-2px)",
+    boxShadow: "0 6px 28px rgba(79,116,255,0.45)",
+  },
+  spinner: {
+    display: "inline-block",
+    width: "14px",
+    height: "14px",
+    border: "2px solid rgba(255,255,255,0.3)",
+    borderTopColor: "#fff",
+    borderRadius: "50%",
+    animation: "spin 0.7s linear infinite",
+    flexShrink: 0,
+  },
+  footerText: {
+    textAlign: "center",
+    fontSize: "0.8125rem",
+    color: "var(--text-3)",
+    marginTop: "1.5rem",
+    fontFamily: "var(--font-body)",
+  },
+  footerLink: {
+    color: "var(--accent)",
+    textDecoration: "none",
+    fontWeight: 500,
+    transition: "color 0.18s",
+  },
 };
 
 export default Login;

@@ -69,15 +69,19 @@ export const useInterview = () => {
     try {
       const pdfBlob = await generateResumePdf(interviewReportId);
 
-      const url = window.URL.createObjectURL(new Blob([pdfBlob]));
+      const url = window.URL.createObjectURL(
+        new Blob([pdfBlob], { type: "application/pdf" })
+      );
       const link = document.createElement("a");
       link.href = url;
       link.setAttribute("download", "resume.pdf");
       document.body.appendChild(link);
       link.click();
       link.remove();
+      window.URL.revokeObjectURL(url);
     } catch (error) {
       console.error("Error generating resume PDF:", error);
+      alert("Failed to generate resume PDF. Please try again.");
     }
   };
 

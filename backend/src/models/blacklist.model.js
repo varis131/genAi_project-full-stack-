@@ -13,4 +13,8 @@ const blacklistTokenSchema = new mongoose.Schema(
 );
 
 const tokenBlacklistModel = mongoose.model("Blacklist", blacklistTokenSchema);
+
+// Auto-delete blacklisted tokens after 1 day (matches JWT expiry)
+blacklistTokenSchema.index({ createdAt: 1 }, { expireAfterSeconds: 86400 });
+
 module.exports = tokenBlacklistModel;

@@ -4,7 +4,8 @@ const { z } = require("zod");
 const ai = new GoogleGenAI({ apiKey: process.env.GOOGLE_GENAI_API_KEY });
 
 async function parseJsonFromResponse(response) {
-  let text = typeof response.text === "function" ? await response.text() : response.text;
+  let text =
+    typeof response.text === "function" ? await response.text() : response.text;
 
   if (!text) {
     throw new Error("Empty response from model");
@@ -75,7 +76,9 @@ Return ONLY JSON: { "question": "...", "type": "technical" | "behavioral" }`;
 async function evaluateAnswer({ question, answer, resume, jobDescription }) {
   const schema = z.object({
     score: z.number().min(0).max(10),
-    feedback: z.string().describe("One or two sentences, specific and actionable"),
+    feedback: z
+      .string()
+      .describe("One or two sentences, specific and actionable"),
   });
 
   const prompt = `Question asked: "${question}"

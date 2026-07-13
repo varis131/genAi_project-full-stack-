@@ -37,8 +37,11 @@ const Interview = () => {
 
   const handleDownloadResume = async () => {
     setIsGeneratingResume(true);
-    await downloadResumePdf(report._id);
-    setIsGeneratingResume(false);
+    try {
+      await downloadResumePdf(report._id);
+    } finally {
+      setIsGeneratingResume(false);
+    }
   };
 
   useEffect(() => {

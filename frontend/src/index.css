@@ -546,6 +546,7 @@ body {
   position: absolute;
   top: -1.5rem;
   right: 1.5rem;
+  z-index: 10;
   background: var(--ink-2);
   border: 1px solid var(--border-mid);
   border-radius: 12px;
