@@ -1,10 +1,11 @@
-const { GoogleGenAI } = require("@google/genai")
-const { z } = require("zod")
-const puppeteer = require("puppeteer")
+const { ChatGoogleGenerativeAI } = require("@langchain/google-genai");
+const { z } = require("zod");
+const puppeteer = require("puppeteer");
 
-const ai = new GoogleGenAI({
-    apiKey: process.env.GOOGLE_GENAI_API_KEY
-})
+const model = new ChatGoogleGenerativeAI({
+    model: "gemini-2.5-flash",
+    apiKey: process.env.GOOGLE_GENAI_API_KEY,
+});
 
 const interviewReportSchema = z.object({
     matchScore: z.number().describe("A score between 0 and 100 indicating how well the candidate's profile matches the job describe"),
@@ -28,35 +29,11 @@ const interviewReportSchema = z.object({
         tasks: z.array(z.string()).describe("List of tasks to be done on this day to follow the preparation plan, e.g. read a specific book or article, solve a set of problems, watch a video etc.")
     })).min(1).describe("A day-wise preparation plan for the candidate to follow in order to prepare for the interview effectively"),
     title: z.string().describe("The title of the job for which the interview report is generated"),
-})
-
-async function parseJsonFromResponse(response) {
-    let text = typeof response.text === "function" ? await response.text() : response.text
-
-    if (!text) {
-        throw new Error("Empty response from model")
-    }
-
-    let trimmed = text.trim()
-
-    // Handle ```json ... ``` style code fences if the model ever uses them
-    if (trimmed.startsWith("```")) {
-        const firstNewline = trimmed.indexOf("\n")
-        if (firstNewline !== -1) {
-            trimmed = trimmed.slice(firstNewline + 1)
-        }
-        if (trimmed.endsWith("```")) {
-            trimmed = trimmed.slice(0, -3)
-        }
-        trimmed = trimmed.trim()
-    }
-
-    return JSON.parse(trimmed)
-}
+});
 
 async function generateInterviewReport({ resume, selfDescription, jobDescription }) {
     const prompt = `You are an expert technical interviewer and career coach.
-Using ONLY the information below, generate a JSON interview report.
+Generate a comprehensive interview preparation report based on the candidate's profile and the target job description.
 
 Candidate resume:
 """${resume}"""
@@ -67,57 +44,13 @@ Self description:
 Job description:
 """${jobDescription}"""
 
-The JSON MUST strictly follow this structure (field names and types):
-
-{
-  "matchScore": 88, // number between 0 and 100
-  "technicalQuestions": [
-    {
-      "question": "Explain the concept of reconciliation in React and how the Virtual DOM facilitates this process.",
-      "intention": "To assess the candidate's understanding of React's internal rendering mechanism and performance optimization strategies.",
-      "answer": "A strong answer should explain that reconciliation is the algorithm React uses to diff the virtual DOM with the real DOM, updating only the necessary parts to ensure high performance, and describe how keys help React identify elements."
-    }
-  ],
-  "behavioralQuestions": [
-    {
-      "question": "Tell me about a time you had to quickly learn a new technology to deliver a project.",
-      "intention": "To evaluate adaptability, learning ability, and ownership.",
-      "answer": "A strong answer should be structured using STAR (Situation, Task, Action, Result), clearly explaining what was learned, how, and the positive impact on the project."
-    }
-  ],
-  "skillGaps": [
-    {
-      "skill": "System design for large-scale distributed systems",
-      "severity": "high"
-    }
-  ],
-  "preparationPlan": [
-    {
-      "day": 1,
-      "focus": "Review core JavaScript and asynchronous programming concepts",
-      "tasks": [
-        "Revise closures, promises, async/await, and the event loop",
-        "Solve 10 medium-level JavaScript coding problems"
-      ]
-    }
-  ],
-  "title": "Full Stack Developer"
-}
-
 Generation rules:
-- Fill ALL fields with concrete, helpful content based on the resume and job description.
-- Every item in "technicalQuestions" and "behavioralQuestions" MUST include a detailed "intention" and a practical, step-by-step "answer".
-- Always infer a meaningful "title" from the job description.
-- Do NOT add any extra fields or text outside the JSON.`
+- Fill all fields with concrete, helpful content based on the resume and job description.
+- For technical and behavioral questions, include clear intentions and comprehensive answer guidance.
+- Infer a meaningful title from the job description.`;
 
-    const response = await ai.models.generateContent({
-        model: "gemini-2.5-flash",
-        contents: prompt,
-    })
-
-    const parsed = await parseJsonFromResponse(response)
-
-    return interviewReportSchema.parse(parsed)
+    const structuredModel = model.withStructuredOutput(interviewReportSchema);
+    return await structuredModel.invoke(prompt);
 }
 
 async function generatePdfFromHtml(htmlContent) {
@@ -128,11 +61,11 @@ async function generatePdfFromHtml(htmlContent) {
             "--disable-setuid-sandbox",
             "--disable-dev-shm-usage",
         ],
-    })
+    });
 
     try {
         const page = await browser.newPage();
-        await page.setContent(htmlContent, { waitUntil: "networkidle0" })
+        await page.setContent(htmlContent, { waitUntil: "networkidle0" });
 
         const pdfBuffer = await page.pdf({
             format: "A4",
@@ -142,51 +75,34 @@ async function generatePdfFromHtml(htmlContent) {
                 left: "15mm",
                 right: "15mm"
             }
-        })
+        });
 
-        return pdfBuffer
+        return pdfBuffer;
     } finally {
-        await browser.close()
+        await browser.close();
     }
 }
 
 async function generateResumePdf({ resume, selfDescription, jobDescription }) {
-
     const resumePdfSchema = z.object({
-        html: z.string().describe("The HTML content of the resume which can be converted to PDF using any library like puppeteer")
-    })
+        html: z.string().describe("The complete HTML content of the tailored resume which can be converted to PDF using puppeteer")
+    });
 
-    const prompt = `Generate resume for a candidate with the following details:
-                        Resume: ${resume}
-                        Self Description: ${selfDescription}
-                        Job Description: ${jobDescription}
+    const prompt = `Generate a resume for a candidate with the following details:
+Resume: ${resume}
+Self Description: ${selfDescription}
+Job Description: ${jobDescription}
 
-                        the response should be a JSON object with a single field "html" which contains the HTML content of the resume which can be converted to PDF using any library like puppeteer.
-                        The resume should be tailored for the given job description and should highlight the candidate's strengths and relevant experience. The HTML content should be well-formatted and structured, making it easy to read and visually appealing.
-                        The content of resume should be not sound like it's generated by AI and should be as close as possible to a real human-written resume.
-                        you can highlight the content using some colors or different font styles but the overall design should be simple and professional.
-                        The content should be ATS friendly, i.e. it should be easily parsable by ATS systems without losing important information.
-                        The resume should not be so lengthy, it should ideally be 1-2 pages long when converted to PDF. Focus on quality rather than quantity and make sure to include all the relevant information that can increase the candidate's chances of getting an interview call for the given job description.
+The resume should be tailored for the given job description and should highlight the candidate's strengths and relevant experience.
+The HTML content should be well-formatted, structured, modern, and professional.
+The content should be ATS friendly, easily parsable by ATS systems without losing important information.
+The resume should be 1-2 pages long when converted to PDF.`;
 
-                        Return ONLY valid JSON with this exact structure:
-                        {
-                          "html": "<!doctype html>...."
-                        }
-                    `
+    const structuredModel = model.withStructuredOutput(resumePdfSchema);
+    const result = await structuredModel.invoke(prompt);
 
-    const response = await ai.models.generateContent({
-        model: "gemini-2.5-flash",
-        contents: prompt,
-    })
-
-    const parsed = await parseJsonFromResponse(response)
-
-    const jsonContent = resumePdfSchema.parse(parsed)
-
-    const pdfBuffer = await generatePdfFromHtml(jsonContent.html)
-
-    return pdfBuffer
-
+    const pdfBuffer = await generatePdfFromHtml(result.html);
+    return pdfBuffer;
 }
 
-module.exports = { generateInterviewReport, generateResumePdf }
+module.exports = { generateInterviewReport, generateResumePdf };

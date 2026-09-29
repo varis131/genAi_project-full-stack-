@@ -4,14 +4,13 @@ const app = express();
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
 
-app.set("trust proxy", 1); // 🔥 VERY IMPORTANT for cookies on Render
+app.set("trust proxy", 1); 
 
-// 🔥 CORS Configuration
 app.use(
   cors({
     origin: [
       "http://localhost:5173",
-      /\.vercel\.app$/, // 🔥 ALL vercel domains allowed
+      /\.vercel\.app$/, // 
     ],
     credentials: true,
   }),
