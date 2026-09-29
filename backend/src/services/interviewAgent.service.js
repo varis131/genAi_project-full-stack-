@@ -1,32 +1,10 @@
-const { GoogleGenAI } = require("@google/genai");
+const { ChatGoogleGenerativeAI } = require("@langchain/google-genai");
 const { z } = require("zod");
 
-const ai = new GoogleGenAI({ apiKey: process.env.GOOGLE_GENAI_API_KEY });
-
-async function parseJsonFromResponse(response) {
-  let text =
-    typeof response.text === "function" ? await response.text() : response.text;
-
-  if (!text) {
-    throw new Error("Empty response from model");
-  }
-
-  let trimmed = text.trim();
-
-  // Handle ```json ... ``` style code fences if the model ever uses them
-  if (trimmed.startsWith("```")) {
-    const firstNewline = trimmed.indexOf("\n");
-    if (firstNewline !== -1) {
-      trimmed = trimmed.slice(firstNewline + 1);
-    }
-    if (trimmed.endsWith("```")) {
-      trimmed = trimmed.slice(0, -3);
-    }
-    trimmed = trimmed.trim();
-  }
-
-  return JSON.parse(trimmed);
-}
+const model = new ChatGoogleGenerativeAI({
+  model: "gemini-2.5-flash",
+  apiKey: process.env.GOOGLE_GENAI_API_KEY,
+});
 
 /**
  * Picks the most relevant *unasked* question from the report's existing question pool,
@@ -47,8 +25,8 @@ async function pickNextQuestion({
   if (pool.length === 0) return null;
 
   const schema = z.object({
-    question: z.string(),
-    type: z.enum(["technical", "behavioral"]),
+    question: z.string().describe("The selected question from the candidate question pool"),
+    type: z.enum(["technical", "behavioral"]).describe("Whether the question is technical or behavioral"),
   });
 
   const prompt = `You are conducting a live mock interview.
@@ -59,15 +37,10 @@ Candidate question pool (pick ONE, don't invent new ones): ${JSON.stringify(
     pool.map((q) => ({ question: q.question, type: q.type })),
   )}
 
-Pick whichever question makes the most natural next step in a real interview (mix technical/behavioral where possible, don't ask two technical questions back to back if avoidable).
-Return ONLY JSON: { "question": "...", "type": "technical" | "behavioral" }`;
+Pick whichever question makes the most natural next step in a real interview (mix technical/behavioral where possible, don't ask two technical questions back to back if avoidable).`;
 
-  const response = await ai.models.generateContent({
-    model: "gemini-2.5-flash",
-    contents: prompt,
-  });
-
-  return schema.parse(await parseJsonFromResponse(response));
+  const structuredModel = model.withStructuredOutput(schema);
+  return await structuredModel.invoke(prompt);
 }
 
 /**
@@ -75,7 +48,7 @@ Return ONLY JSON: { "question": "...", "type": "technical" | "behavioral" }`;
  */
 async function evaluateAnswer({ question, answer, resume, jobDescription }) {
   const schema = z.object({
-    score: z.number().min(0).max(10),
+    score: z.number().min(0).max(10).describe("Score between 0 and 10 based on correctness and clarity"),
     feedback: z
       .string()
       .describe("One or two sentences, specific and actionable"),
@@ -86,15 +59,10 @@ Candidate's answer: """${answer}"""
 Resume context: """${resume}"""
 Job description: """${jobDescription}"""
 
-Score the answer 0-10 on correctness, structure, and relevance to the role. Give short, specific feedback (what was good, what to fix — no generic praise).
-Return ONLY JSON: { "score": 7, "feedback": "..." }`;
+Score the answer 0-10 on correctness, structure, and relevance to the role. Give short, specific feedback (what was good, what to fix — no generic praise).`;
 
-  const response = await ai.models.generateContent({
-    model: "gemini-2.5-flash",
-    contents: prompt,
-  });
-
-  return schema.parse(await parseJsonFromResponse(response));
+  const structuredModel = model.withStructuredOutput(schema);
+  return await structuredModel.invoke(prompt);
 }
 
 /**
@@ -102,10 +70,10 @@ Return ONLY JSON: { "score": 7, "feedback": "..." }`;
  */
 async function generateFinalReport({ turns, resume, jobDescription }) {
   const schema = z.object({
-    overallScore: z.number().min(0).max(10),
-    strengths: z.array(z.string()).min(1),
-    weaknesses: z.array(z.string()).min(1),
-    summary: z.string(),
+    overallScore: z.number().min(0).max(10).describe("Overall average-weighted score between 0 and 10"),
+    strengths: z.array(z.string()).min(1).describe("2-4 concrete strengths observed during the interview"),
+    weaknesses: z.array(z.string()).min(1).describe("2-4 concrete weaknesses observed during the interview"),
+    summary: z.string().describe("Short summary paragraph (3-4 sentences) on candidate's interview readiness"),
   });
 
   const transcript = turns
@@ -118,16 +86,12 @@ async function generateFinalReport({ turns, resume, jobDescription }) {
   const prompt = `Here is a full mock interview transcript with per-question scores:
 """${transcript}"""
 Job description: """${jobDescription}"""
+Candidate resume: """${resume}"""
 
-Write a final interview report: overall score (avg-weighted, your judgement), 2-4 concrete strengths, 2-4 concrete weaknesses, and a short summary paragraph (3-4 sentences) on interview readiness.
-Return ONLY JSON: { "overallScore": 7.2, "strengths": [...], "weaknesses": [...], "summary": "..." }`;
+Write a final interview report: overall score (avg-weighted, your judgement), 2-4 concrete strengths, 2-4 concrete weaknesses, and a short summary paragraph (3-4 sentences) on interview readiness.`;
 
-  const response = await ai.models.generateContent({
-    model: "gemini-2.5-flash",
-    contents: prompt,
-  });
-
-  return schema.parse(await parseJsonFromResponse(response));
+  const structuredModel = model.withStructuredOutput(schema);
+  return await structuredModel.invoke(prompt);
 }
 
 module.exports = { pickNextQuestion, evaluateAnswer, generateFinalReport };
